@@ -48,7 +48,6 @@ export default async function ArticlePage({ params }) {
       {a.image_url && <figure className="photo"><img src={a.image_url} alt={a.title} />{a.image_caption && <figcaption>{a.image_caption}</figcaption>}</figure>}
       <ShareBar url={url} title={a.title} />
       <ArticleBody blocks={blocks} />
-      <ShareBar url={url} title={a.title} label="Partager cet article" />
       {related?.length > 0 && <div className="related"><div className="sec-head"><h2 className="sec">À lire aussi</h2></div>
         <div className="grid4">{related.map(r => (<Link key={r.slug} href={`/article/${r.slug}`} className="card">
           <div className="media">{r.image_url ? <img className="thumb" src={r.image_url} alt={r.title} /> : <div className="ph">Tolobana Info</div>}</div><div className="in"><h3>{r.title}</h3></div></Link>))}</div></div>}

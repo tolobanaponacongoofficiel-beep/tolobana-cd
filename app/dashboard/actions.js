@@ -128,3 +128,15 @@ export async function deletePartner(fd) {
   await sb.from('audit_log').insert({ user_id: user.id, action: 'partner_delete', target: String(fd.get('id')) })
   revalidatePath('/', 'layout')
 }
+
+export async function setPartnerBanner(fd) {
+  const { sb, user, role } = await getUserAndRole()
+  if (!user || !atLeast(role, 'admin')) return
+  const id = Number(fd.get('id'))
+  if (!Number.isInteger(id)) return
+  const banner = String(fd.get('banner_url') || '')
+  await sb.from('partners').update({ banner_url: isMediaUrl(banner) ? banner : null }).eq('id', id)
+  await sb.from('audit_log').insert({ user_id: user.id, action: 'partner_banner', target: String(id) })
+  revalidatePath('/', 'layout')
+  redirect('/dashboard/partenaires?ok=1')
+}
