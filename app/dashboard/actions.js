@@ -1,4 +1,5 @@
 'use server'
+import { parseTags } from '@/lib/tags'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { getUserAndRole, atLeast } from '@/lib/supabase/server'
@@ -36,7 +37,7 @@ export async function createArticle(fd) {
     author_id: user.id, writer_id: isEditor && isUuid(writer) ? writer : null,
     category_id: categoryId,
     image_url: isMediaUrl(image) ? image : null, image_caption: String(fd.get('image_caption') || '').trim().slice(0, 300) || null,
-    status: intent === 'draft' ? 'draft' : 'submitted', is_demo: fd.get('is_demo') === 'on',
+    status: intent === 'draft' ? 'draft' : 'submitted', is_demo: fd.get('is_demo') === 'on', tags: parseTags(fd.get('tags')),
     is_breaking: isEditor && fd.get('is_breaking') === 'on',
   }).select('id').single()
   if (error || !row) redirect('/dashboard?err=enregistrement')
@@ -73,7 +74,7 @@ export async function updateArticle(fd) {
     body: blocksToText(blocks), blocks, category_id: categoryId,
     image_url: image && (isMediaUrl(image) || image === old.image_url) ? image : null,
     image_caption: String(fd.get('image_caption') || '').trim().slice(0, 300) || null,
-    is_demo: fd.get('is_demo') === 'on', updated_at: new Date().toISOString(),
+    is_demo: fd.get('is_demo') === 'on', tags: parseTags(fd.get('tags')), updated_at: new Date().toISOString(),
   }
   if (isEditor) {
     const writer = String(fd.get('writer_id') || '')

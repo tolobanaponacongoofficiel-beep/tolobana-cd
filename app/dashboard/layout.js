@@ -19,6 +19,7 @@ export default async function DashboardLayout({ children }) {
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/auteurs', label: 'Rédacteurs' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/moderation', label: 'Commentaires' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/videos', label: 'Tolobana TV' }] : []),
+    ...(atLeast(role, 'admin') ? [{ href: '/dashboard/newsletter', label: 'Newsletter' }] : []),
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/partenaires', label: 'Partenaires' }] : []),
     { href: '/dashboard/profil', label: 'Mon profil' },
   ]

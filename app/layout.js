@@ -6,6 +6,9 @@ import Ticker from './components/Ticker'
 import Partners from './components/Partners'
 import Clock from './components/Clock'
 import Script from 'next/script'
+import NewsletterBox from './components/NewsletterBox'
+import PwaRegister from './components/PwaRegister'
+import InstallPrompt from './components/InstallPrompt'
 import { SITE_URL } from '@/lib/site'
 
 const GA = /^G-[A-Z0-9]{4,}$/.test(process.env.NEXT_PUBLIC_GA_ID || '') ? process.env.NEXT_PUBLIC_GA_ID : null
@@ -19,6 +22,7 @@ export const metadata = {
   alternates: { types: { 'application/rss+xml': '/rss.xml' } },
   verification: process.env.NEXT_PUBLIC_GSC_VERIFICATION ? { google: process.env.NEXT_PUBLIC_GSC_VERIFICATION } : undefined,
 }
+export const viewport = { themeColor: '#031523' }
 const ORG = { '@context': 'https://schema.org', '@type': 'NewsMediaOrganization', name: 'Tolobana Info', url: SITE_URL, logo: `${SITE_URL}/logo.png` }
 const MAIN_COUNT = 7
 
@@ -55,10 +59,12 @@ export default async function RootLayout({ children }) {
       </div></div>
       <Ticker items={breaking} />
       {children}
+      <NewsletterBox />
       <Partners />
       <footer><div className="wrap" style={{ display: 'grid', gap: 6 }}>
         <p style={{ margin: 0 }}>© {new Date().getFullYear()} Tolobana Info. Tous droits réservés. Kinshasa, RDC.</p>
         <p style={{ margin: 0 }}>Site conçu et maintenu par Ir Hilaire Tobalibi · <Link href={staff ? '/dashboard' : '/login'}>Espace rédaction</Link></p>
       </div></footer>
+      <PwaRegister /><InstallPrompt />
     </body></html>)
 }

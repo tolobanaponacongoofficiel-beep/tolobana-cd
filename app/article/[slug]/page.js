@@ -16,7 +16,7 @@ async function load(slug) {
 export async function generateMetadata({ params }) {
   const a = await load(params.slug)
   return a ? {
-    title: a.title, description: a.summary, alternates: { canonical: `/article/${a.slug}` },
+    title: a.title, description: a.summary, keywords: a.tags?.length ? a.tags : undefined, alternates: { canonical: `/article/${a.slug}` },
     openGraph: { title: a.title, description: a.summary, type: 'article', url: `/article/${a.slug}`, siteName: 'Tolobana Info', locale: 'fr_CD',
       publishedTime: a.published_at, modifiedTime: a.updated_at, images: a.image_url ? [a.image_url] : undefined },
     twitter: { card: 'summary_large_image', title: a.title, description: a.summary, images: a.image_url ? [a.image_url] : undefined },
@@ -29,6 +29,7 @@ export default async function ArticlePage({ params }) {
   await sb.rpc('increment_views', { p_slug: params.slug })
   const { data: related } = await sb.from('articles').select('title,slug,image_url').eq('status', 'published').eq('category_id', a.category_id).neq('id', a.id).order('published_at', { ascending: false }).limit(3)
 
+  const mins = Math.max(1, Math.round((a.body || '').trim().split(/\s+/).length / 200))
   const h = headers()
   const url = `${h.get('x-forwarded-proto') || 'https'}://${h.get('x-forwarded-host') || h.get('host')}/article/${a.slug}`
   const writer = a.authors
@@ -48,11 +49,12 @@ export default async function ArticlePage({ params }) {
       {a.subtitle && <p className="deck">{a.subtitle}</p>}
       <div className="byline">
         <Avatar name={name} url={writer?.photo_url || a.profiles?.photo_url} />
-        <div><Link href={href}>{name}</Link>{writer?.title && <span className="role">{writer.title}</span>}<time dateTime={a.published_at}>{when}</time></div>
+        <div><Link href={href}>{name}</Link>{writer?.title && <span className="role">{writer.title}</span>}<time dateTime={a.published_at}>{when}</time><span className="role">{mins} min de lecture</span></div>
       </div>
       {a.image_url && <figure className="photo"><img src={a.image_url} alt={a.title} />{a.image_caption && <figcaption>{a.image_caption}</figcaption>}</figure>}
       <ShareBar url={url} title={a.title} />
       <ArticleBody blocks={blocks} />
+      {a.tags?.length > 0 && <div className="chips" aria-label="Mots-clés">{a.tags.map(t => <Link key={t} href={`/tag/${encodeURIComponent(t)}`}>#{t}</Link>)}</div>}
       {related?.length > 0 && <div className="related"><div className="sec-head"><h2 className="sec">À lire aussi</h2></div>
         <div className="grid4">{related.map(r => (<Link key={r.slug} href={`/article/${r.slug}`} className="card">
           <div className="media">{r.image_url ? <img className="thumb" src={r.image_url} alt={r.title} /> : <div className="ph">Tolobana Info</div>}</div><div className="in"><h3>{r.title}</h3></div></Link>))}</div></div>}

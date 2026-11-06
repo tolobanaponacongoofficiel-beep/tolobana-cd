@@ -51,6 +51,8 @@ export default function ArticleForm({ action, cats, authors, meName, isEditor, i
         <ImageUploader name="image_url" value={initial?.image_url || ''} label="Choisir la photo principale" />
         <label>Légende et crédit photo
           <input name="image_caption" maxLength={300} defaultValue={initial?.image_caption || ''} placeholder="Ex. Le sélectionneur des Léopards. Photo : Fecofa" /></label>
+        <label>Mots-clés (séparés par des virgules, 8 maximum)
+          <input name="tags" maxLength={200} defaultValue={(initial?.tags || []).join(', ')} placeholder="Ex. Kinshasa, Léopards, CAN 2027" /></label>
       </div>
 
       <div className="panel">
