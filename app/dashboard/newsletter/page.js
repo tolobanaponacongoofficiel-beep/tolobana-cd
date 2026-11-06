@@ -9,6 +9,7 @@ export const maxDuration = 60
 const ERR = {
   mail: 'Envoi d’e-mails non configuré : ajoutez RESEND_API_KEY dans Vercel (voir LISEZMOI-phase7.md).',
   sujet: 'Indiquez un objet.', articles: 'Aucun article publié à inclure.', abonnes: 'Aucun abonné confirmé pour le moment.',
+  doublon: 'Cette newsletter (même objet) vient déjà d’être envoyée il y a moins de 30 minutes. Changez l’objet si c’est volontaire.',
   envoi: 'L’envoi s’est interrompu (service d’e-mail). Vérifiez votre clé et votre adresse d’expédition.',
 }
 const STATUS = { pending: 'en attente', confirmed: 'confirmé', unsubscribed: 'désabonné' }

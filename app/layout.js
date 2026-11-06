@@ -10,6 +10,7 @@ import NewsletterBox from './components/NewsletterBox'
 import PwaRegister from './components/PwaRegister'
 import InstallPrompt from './components/InstallPrompt'
 import { SITE_URL } from '@/lib/site'
+import './components/phase8.css'
 
 const GA = /^G-[A-Z0-9]{4,}$/.test(process.env.NEXT_PUBLIC_GA_ID || '') ? process.env.NEXT_PUBLIC_GA_ID : null
 export const metadata = {
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }) {
   const link = c => <Link key={c.slug} href={`/?rubrique=${c.slug}`}>{c.name}</Link>
   return (
     <html lang="fr"><body>
+      <a href="#contenu" className="skip">Aller au contenu</a>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG) }} />
       {GA && <><Script src={`https://www.googletagmanager.com/gtag/js?id=${GA}`} strategy="afterInteractive" />
         <Script id="ga" strategy="afterInteractive">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA}');`}</Script></>}
@@ -58,7 +60,7 @@ export default async function RootLayout({ children }) {
             <div className="more-pop">{list.slice(MAIN_COUNT).map(link)}</div></div>}</nav>
       </div></div>
       <Ticker items={breaking} />
-      {children}
+      <div id="contenu" tabIndex={-1} style={{ outline: 'none' }}>{children}</div>
       <NewsletterBox />
       <Partners />
       <footer><div className="wrap" style={{ display: 'grid', gap: 6 }}>

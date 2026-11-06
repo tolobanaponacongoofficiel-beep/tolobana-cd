@@ -18,9 +18,12 @@ export default async function DashboardLayout({ children }) {
     { href: '/dashboard/articles', label: atLeast(role, 'editor') ? 'Tous les articles' : 'Mes articles' },
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/auteurs', label: 'Rédacteurs' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/moderation', label: 'Commentaires' }] : []),
+    ...(atLeast(role, 'editor') ? [{ href: '/dashboard/statistiques', label: 'Statistiques' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/videos', label: 'Tolobana TV' }] : []),
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/newsletter', label: 'Newsletter' }] : []),
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/partenaires', label: 'Partenaires' }] : []),
+    ...(atLeast(role, 'admin') ? [{ href: '/dashboard/equipe', label: 'Équipe et rôles' }] : []),
+    ...(atLeast(role, 'admin') ? [{ href: '/dashboard/journal', label: 'Journal d’activité' }] : []),
     { href: '/dashboard/profil', label: 'Mon profil' },
   ]
   return (

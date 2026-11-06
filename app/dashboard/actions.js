@@ -4,6 +4,10 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { getUserAndRole, atLeast } from '@/lib/supabase/server'
 import { sanitizeBlocks, blocksToText, firstParagraph, isMediaUrl, isUuid } from '@/lib/blocks'
+import { kinshasaToISO } from '@/lib/dates'
+
+// Date future saisie dans le formulaire (heure de Kinshasa), sinon null.
+const futureDate = v => { const iso = kinshasaToISO(v); return iso && new Date(iso).getTime() > Date.now() ? iso : null }
 
 const slugify = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80)
 
@@ -24,7 +28,7 @@ export async function createArticle(fd) {
   const title = String(fd.get('title') || '').trim().slice(0, 220)
   const blocks = sanitizeBlocks(fd.get('blocks'))
   const categoryId = Number(fd.get('category_id'))
-  if (!title || !blocks.length || !categoryId) redirect('/dashboard?err=incomplet')
+  if (!title || !blocks.length || !categoryId) redirect('/dashboard/nouvel-article?err=incomplet')
 
   const intent = String(fd.get('intent') || 'draft')
   const image = String(fd.get('image_url') || '')
@@ -40,14 +44,16 @@ export async function createArticle(fd) {
     status: intent === 'draft' ? 'draft' : 'submitted', is_demo: fd.get('is_demo') === 'on', tags: parseTags(fd.get('tags')),
     is_breaking: isEditor && fd.get('is_breaking') === 'on',
   }).select('id').single()
-  if (error || !row) redirect('/dashboard?err=enregistrement')
+  if (error || !row) redirect('/dashboard/nouvel-article?err=enregistrement')
 
   if (intent === 'publish' && isEditor) {
-    await sb.from('articles').update({ status: 'published', published_at: new Date().toISOString() }).eq('id', row.id)
-    await sb.from('audit_log').insert({ user_id: user.id, action: 'publish', target: String(row.id) })
+    const when = futureDate(fd.get('publish_at'))
+    await sb.from('articles').update({ status: 'published', published_at: when || new Date().toISOString() }).eq('id', row.id)
+    await sb.from('audit_log').insert({ user_id: user.id, action: when ? 'schedule' : 'publish', target: String(row.id) })
     revalidatePath('/', 'layout')
   }
   revalidatePath('/dashboard')
+  if (intent === 'publish' && isEditor && futureDate(fd.get('publish_at'))) redirect('/dashboard/statistiques?ok=programme')
   redirect(`/dashboard?ok=${intent === 'publish' && isEditor ? 'publie' : intent === 'draft' ? 'brouillon' : 'soumis'}`)
 }
 
@@ -57,7 +63,7 @@ export async function updateArticle(fd) {
   const isEditor = atLeast(role, 'editor')
   const id = String(fd.get('id') || '')
   if (!isUuid(id)) redirect('/dashboard/articles')
-  const { data: old } = await sb.from('articles').select('id,slug,author_id,status,image_url,published_at').eq('id', id).single()
+  const { data: old } = await sb.from('articles').select('id,slug,author_id,status,image_url,published_at,last_update_at').eq('id', id).single()
   if (!old) redirect('/dashboard/articles?err=introuvable')
   // Un journaliste ne modifie que ses propres articles non publiés ; un éditeur modifie tout.
   if (!isEditor && (old.author_id !== user.id || old.status === 'published')) redirect('/dashboard/articles?err=interdit')
@@ -83,12 +89,19 @@ export async function updateArticle(fd) {
   }
   const intent = String(fd.get('intent') || 'save')
   if (intent === 'submit' && old.status !== 'published') upd.status = 'submitted'
-  if (intent === 'publish' && isEditor && old.status !== 'published') { upd.status = 'published'; upd.published_at = old.published_at || new Date().toISOString() }
+  const nowISO = new Date().toISOString()
+  const scheduledNow = old.status === 'published' && old.published_at && new Date(old.published_at).getTime() > Date.now()
+  if (intent === 'publish' && isEditor && old.status !== 'published') { upd.status = 'published'; upd.published_at = futureDate(fd.get('publish_at')) || (old.published_at && new Date(old.published_at).getTime() <= Date.now() ? old.published_at : nowISO) }
+  // Article déjà programmé : l'éditeur peut changer la date ; champ vide ou date passée = publication immédiate.
+  if (isEditor && scheduledNow && fd.has('publish_at')) upd.published_at = futureDate(fd.get('publish_at')) || nowISO
+  // Mention « Mis à jour le … » affichée sur l'article publié (correction ou ajout important).
+  if (isEditor && old.status === 'published' && !scheduledNow && fd.get('mark_updated') === 'on') upd.last_update_at = nowISO
 
   const { error } = await sb.from('articles').update(upd).eq('id', id)
   if (error) redirect(`/dashboard/articles/${id}?err=enregistrement`)
   await sb.from('audit_log').insert({ user_id: user.id, action: intent === 'publish' ? 'publish' : 'article_edit', target: id })
   revalidatePath('/', 'layout'); revalidatePath(`/article/${old.slug}`)
+  if (upd.published_at && new Date(upd.published_at).getTime() > Date.now()) redirect('/dashboard/statistiques?ok=programme')
   redirect(`/dashboard/articles?ok=${intent === 'publish' ? 'publie' : intent === 'submit' ? 'soumis' : 'modifie'}`)
 }
 

@@ -19,6 +19,12 @@ export async function sendCampaign(fd) {
   const n = [3, 5, 8].includes(Number(fd.get('count'))) ? Number(fd.get('count')) : 5
   const all = fd.get('all') === 'on'
   if (!subject) redirect('/dashboard/newsletter?err=sujet')
+  // Anti-doublon : même objet déjà envoyé à tous dans les 30 dernières minutes (double clic, page rechargée…)
+  if (all) {
+    const since = new Date(Date.now() - 30 * 60000).toISOString()
+    const { data: dup } = await sb.from('newsletter_campaigns').select('id').eq('subject', subject).gte('sent_at', since).limit(1)
+    if (dup?.length) redirect('/dashboard/newsletter?err=doublon')
+  }
   const { data: arts } = await sb.from('articles').select('title,slug,summary,image_url').eq('status', 'published')
     .lte('published_at', new Date().toISOString()).order('published_at', { ascending: false }).limit(n)
   if (!arts?.length) redirect('/dashboard/newsletter?err=articles')
@@ -40,7 +46,10 @@ export async function sendCampaign(fd) {
       const u = s.token ? `${SITE_URL}/newsletter/desabonnement?token=${s.token}` : `${SITE_URL}/`
       return { to: s.email, subject, html: html.replace(/\{\{UNSUB\}\}/g, u), headers: s.token ? { 'List-Unsubscribe': `<${u}>` } : undefined }
     }))
-    if (!r.ok) redirect(`/dashboard/newsletter?err=envoi&sent=${sent}`)
+    if (!r.ok) {
+      if (all && sent > 0) await sb.from('newsletter_campaigns').insert({ subject: `${subject} (envoi interrompu)`, body: intro || null, sent_count: sent, created_by: user.id })
+      redirect(`/dashboard/newsletter?err=envoi&sent=${sent}`)
+    }
     sent += chunk.length
   }
   if (all) await sb.from('newsletter_campaigns').insert({ subject, body: intro || null, sent_count: sent, created_by: user.id })

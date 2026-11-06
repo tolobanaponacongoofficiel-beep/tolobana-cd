@@ -14,6 +14,10 @@ export async function subscribe(_prev, fd) {
   if (email.length > 190 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) return { ok: false, msg: 'Adresse e-mail invalide.' }
   const sb = supabaseAdmin()
   if (!sb) return { ok: false, msg: 'La newsletter sera bientôt disponible.' }
+  // Anti-abus : trop de demandes d'inscription en peu de temps (évite d'utiliser le site pour inonder des boîtes e-mail).
+  const since = new Date(Date.now() - 10 * 60000).toISOString()
+  const { count: recent } = await sb.from('subscribers').select('id', { count: 'exact', head: true }).eq('status', 'pending').gte('requested_at', since)
+  if ((recent || 0) >= 40) return { ok: false, msg: 'Beaucoup de demandes en ce moment. Réessayez dans quelques minutes.' }
   const { data: ex } = await sb.from('subscribers').select('id,status,requested_at').eq('email', email).maybeSingle()
   if (ex?.status === 'confirmed') return { ok: true, msg: 'Vous êtes déjà abonné(e). Merci !' }
   if (ex?.status === 'pending' && Date.now() - new Date(ex.requested_at).getTime() < 60000) return { ok: true, msg: 'Un e-mail de confirmation vient de vous être envoyé.' }
