@@ -52,3 +52,25 @@ input,textarea,select{padding:10px;border:1px solid #ccd;border-radius:4px;font-
 .partner{display:flex;align-items:center;justify-content:center;height:64px;min-width:120px;padding:6px 14px;border:1px solid var(--line);border-radius:6px;font-weight:600;color:#445}
 .partner img{max-height:48px;width:auto}
 footer{background:var(--navy);color:#9fb3c8;font-size:.8rem;padding:24px 0}
+.brand img{height:84px}
+@media(max-width:600px){.brand img{height:58px}.search input{width:120px}}
+.search{display:flex}.search input{width:200px;border:0;border-radius:4px 0 0 4px;padding:9px 10px;font-size:.9rem}.search .btn{border-radius:0 4px 4px 0;padding:9px 12px}
+.ph{display:grid;place-items:center;color:#3d7fb3;font:800 .8rem system-ui;letter-spacing:.12em}
+.hero-main .thumb,.hero-main .ph{max-height:440px}
+.cols{display:grid;gap:24px;margin-top:8px}
+@media(min-width:960px){.cols{grid-template-columns:1fr 300px}}
+.sec-head{display:flex;justify-content:space-between;align-items:baseline;margin:28px 0 12px}.sec-head h2.sec{margin:0}.sec-head a{font:600 .8rem system-ui;color:var(--blue)}
+.grid4{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(210px,1fr))}
+.most{background:#fff;border-radius:6px;padding:14px;border-top:3px solid var(--red);margin-top:28px}
+.most h2{margin:0 0 6px;font:800 .95rem system-ui;text-transform:uppercase}
+.most ol{margin:0;padding:0;list-style:none;counter-reset:n}
+.most li{counter-increment:n;display:grid;grid-template-columns:28px 1fr;gap:6px;padding:10px 0;border-bottom:1px solid var(--line);font-weight:600;line-height:1.3}
+.most li::before{content:counter(n);font:800 1.2rem system-ui;color:var(--red)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.chips a{font:600 .78rem system-ui;background:#fff;border:1px solid var(--line);padding:5px 10px;border-radius:999px}
+.chips a:hover{border-color:var(--blue);color:var(--blue)}
+.comments{margin-top:32px;border-top:2px solid var(--line);padding-top:16px;font-family:system-ui}
+.cm{padding:10px 0;border-bottom:1px solid var(--line)}.cm.child{margin-left:24px;border-left:3px solid var(--blue);padding-left:12px;border-bottom:0}
+.cm p{margin:.3rem 0!important;font-size:1rem!important;line-height:1.5!important}.cm-actions{display:flex;gap:14px;align-items:flex-start;font-size:.8rem}
+.cm-actions summary{cursor:pointer;color:var(--blue);font-weight:600}.link{background:none;border:0;color:#889;cursor:pointer;font-size:.8rem;padding:0}
+.cm-form{margin:10px 0;display:grid;gap:8px}
+.related{margin-top:28px}

@@ -17,9 +17,10 @@ export default async function RootLayout({ children }) {
         <div className="bar">
           <Link href="/" className="brand"><img src="/logo.png" alt="Tolobana Info" /></Link>
           <div className="bar-right"><span className="date">{date}</span>
+            <form action="/recherche" className="search" role="search"><input name="q" placeholder="Rechercher…" aria-label="Rechercher" /><button className="btn">OK</button></form>
             <Link href={user ? '/dashboard' : '/login'} className="btn">{user ? 'Mon espace' : 'Connexion'}</Link></div>
         </div>
-        <nav className="menu">{(cats || []).map(c => <Link key={c.slug} href={`/?rubrique=${c.slug}`}>{c.name}</Link>)}</nav>
+        <nav className="menu"><Link href="/">Accueil</Link>{(cats || []).map(c => <Link key={c.slug} href={`/?rubrique=${c.slug}`}>{c.name}</Link>)}</nav>
       </div></header>
       <Ticker items={breaking} />
       {children}

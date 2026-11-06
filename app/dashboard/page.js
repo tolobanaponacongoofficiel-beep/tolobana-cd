@@ -13,6 +13,7 @@ export default async function Dashboard() {
   return (<main className="wrap sans">
     <h2>Bonjour {me?.name} <small>({role})</small></h2>
     <form action={signOut}><button className="btn gray">Déconnexion</button></form>
+    {atLeast(role, 'editor') && <p><a href="/dashboard/moderation" className="btn">Modérer les commentaires</a></p>}
     <div className="panel"><form className="f" action={updateProfile} style={{ margin: 0 }}><h3>Mon profil</h3>
       <input name="name" defaultValue={me?.name || ''} placeholder="Nom affiché" required />
       <textarea name="bio" rows={3} defaultValue={me?.bio || ''} placeholder="Courte biographie (affichée sur votre page auteur)" />
