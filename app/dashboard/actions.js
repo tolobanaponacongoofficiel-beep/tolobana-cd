@@ -1,7 +1,12 @@
 'use server'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 import { getUserAndRole, atLeast } from '@/lib/supabase/server'
-const slugify = t => t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+import { sanitizeBlocks, blocksToText, firstParagraph, isMediaUrl, isUuid } from '@/lib/blocks'
+
+const slugify = t => t.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80)
+
+// Les logos de partenaires passent encore par le formulaire (fichiers légers).
 async function uploadImage(sb, userId, file, folder) {
   if (!file || typeof file === 'string' || !file.size) return null
   if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 4 * 1024 * 1024) return null
@@ -10,20 +15,82 @@ async function uploadImage(sb, userId, file, folder) {
   const { error } = await sb.storage.from('media').upload(path, Buffer.from(await file.arrayBuffer()), { contentType: file.type })
   return error ? null : sb.storage.from('media').getPublicUrl(path).data.publicUrl
 }
+
 export async function createArticle(fd) {
   const { sb, user, role } = await getUserAndRole()
-  if (!user || !atLeast(role, 'journalist')) return
-  const title = String(fd.get('title')).trim()
-  const image_url = await uploadImage(sb, user.id, fd.get('image'), 'articles')
-  await sb.from('articles').insert({
-    title, subtitle: fd.get('subtitle') || null, summary: fd.get('summary') || null, body: String(fd.get('body')),
-    slug: `${slugify(title)}-${Date.now().toString(36)}`, author_id: user.id, category_id: Number(fd.get('category_id')),
-    image_url, image_caption: fd.get('image_caption') || null,
-    status: fd.get('submit') ? 'submitted' : 'draft', is_demo: fd.get('is_demo') === 'on',
-    is_breaking: atLeast(role, 'editor') && fd.get('is_breaking') === 'on',
-  })
+  if (!user || !atLeast(role, 'journalist')) redirect('/')
+  const isEditor = atLeast(role, 'editor')
+  const title = String(fd.get('title') || '').trim().slice(0, 220)
+  const blocks = sanitizeBlocks(fd.get('blocks'))
+  const categoryId = Number(fd.get('category_id'))
+  if (!title || !blocks.length || !categoryId) redirect('/dashboard?err=incomplet')
+
+  const intent = String(fd.get('intent') || 'draft')
+  const image = String(fd.get('image_url') || '')
+  const writer = String(fd.get('writer_id') || '')
+  const { data: row, error } = await sb.from('articles').insert({
+    title, subtitle: String(fd.get('subtitle') || '').trim().slice(0, 300) || null,
+    summary: String(fd.get('summary') || '').trim().slice(0, 400) || firstParagraph(blocks) || null,
+    body: blocksToText(blocks), blocks,
+    slug: `${slugify(title) || 'article'}-${Date.now().toString(36)}`,
+    author_id: user.id, writer_id: isEditor && isUuid(writer) ? writer : null,
+    category_id: categoryId,
+    image_url: isMediaUrl(image) ? image : null, image_caption: String(fd.get('image_caption') || '').trim().slice(0, 300) || null,
+    status: intent === 'draft' ? 'draft' : 'submitted', is_demo: fd.get('is_demo') === 'on',
+    is_breaking: isEditor && fd.get('is_breaking') === 'on',
+  }).select('id').single()
+  if (error || !row) redirect('/dashboard?err=enregistrement')
+
+  if (intent === 'publish' && isEditor) {
+    await sb.from('articles').update({ status: 'published', published_at: new Date().toISOString() }).eq('id', row.id)
+    await sb.from('audit_log').insert({ user_id: user.id, action: 'publish', target: String(row.id) })
+    revalidatePath('/', 'layout')
+  }
   revalidatePath('/dashboard')
+  redirect(`/dashboard?ok=${intent === 'publish' && isEditor ? 'publie' : intent === 'draft' ? 'brouillon' : 'soumis'}`)
 }
+
+export async function updateArticle(fd) {
+  const { sb, user, role } = await getUserAndRole()
+  if (!user || !atLeast(role, 'journalist')) redirect('/')
+  const isEditor = atLeast(role, 'editor')
+  const id = String(fd.get('id') || '')
+  if (!isUuid(id)) redirect('/dashboard/articles')
+  const { data: old } = await sb.from('articles').select('id,slug,author_id,status,image_url,published_at').eq('id', id).single()
+  if (!old) redirect('/dashboard/articles?err=introuvable')
+  // Un journaliste ne modifie que ses propres articles non publiés ; un éditeur modifie tout.
+  if (!isEditor && (old.author_id !== user.id || old.status === 'published')) redirect('/dashboard/articles?err=interdit')
+
+  const title = String(fd.get('title') || '').trim().slice(0, 220)
+  const blocks = sanitizeBlocks(fd.get('blocks'))
+  const categoryId = Number(fd.get('category_id'))
+  if (!title || !blocks.length || !categoryId) redirect(`/dashboard/articles/${id}?err=incomplet`)
+
+  const image = String(fd.get('image_url') || '')
+  const upd = {
+    title, subtitle: String(fd.get('subtitle') || '').trim().slice(0, 300) || null,
+    summary: String(fd.get('summary') || '').trim().slice(0, 400) || firstParagraph(blocks) || null,
+    body: blocksToText(blocks), blocks, category_id: categoryId,
+    image_url: image && (isMediaUrl(image) || image === old.image_url) ? image : null,
+    image_caption: String(fd.get('image_caption') || '').trim().slice(0, 300) || null,
+    is_demo: fd.get('is_demo') === 'on', updated_at: new Date().toISOString(),
+  }
+  if (isEditor) {
+    const writer = String(fd.get('writer_id') || '')
+    upd.writer_id = isUuid(writer) ? writer : null
+    upd.is_breaking = fd.get('is_breaking') === 'on'
+  }
+  const intent = String(fd.get('intent') || 'save')
+  if (intent === 'submit' && old.status !== 'published') upd.status = 'submitted'
+  if (intent === 'publish' && isEditor && old.status !== 'published') { upd.status = 'published'; upd.published_at = old.published_at || new Date().toISOString() }
+
+  const { error } = await sb.from('articles').update(upd).eq('id', id)
+  if (error) redirect(`/dashboard/articles/${id}?err=enregistrement`)
+  await sb.from('audit_log').insert({ user_id: user.id, action: intent === 'publish' ? 'publish' : 'article_edit', target: id })
+  revalidatePath('/', 'layout'); revalidatePath(`/article/${old.slug}`)
+  redirect(`/dashboard/articles?ok=${intent === 'publish' ? 'publie' : intent === 'submit' ? 'soumis' : 'modifie'}`)
+}
+
 export async function review(fd) {
   const { sb, user, role } = await getUserAndRole()
   if (!user || !atLeast(role, 'editor')) return
@@ -33,12 +100,15 @@ export async function review(fd) {
   await sb.from('audit_log').insert({ user_id: user.id, action: d, target: String(fd.get('id')) })
   revalidatePath('/', 'layout')
 }
+
 export async function updateProfile(fd) {
   const { sb, user } = await getUserAndRole()
   if (!user) return
   await sb.from('profiles').update({ name: String(fd.get('name')).trim(), bio: fd.get('bio') || null }).eq('id', user.id)
   revalidatePath('/', 'layout')
+  redirect('/dashboard/profil?ok=1')
 }
+
 export async function addPartner(fd) {
   const { sb, user, role } = await getUserAndRole()
   if (!user || !atLeast(role, 'admin')) return
@@ -48,6 +118,7 @@ export async function addPartner(fd) {
   await sb.from('audit_log').insert({ user_id: user.id, action: 'partner_add', target: String(fd.get('name')) })
   revalidatePath('/', 'layout')
 }
+
 export async function deletePartner(fd) {
   const { sb, user, role } = await getUserAndRole()
   if (!user || !atLeast(role, 'admin')) return

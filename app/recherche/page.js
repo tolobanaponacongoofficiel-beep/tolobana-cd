@@ -12,12 +12,12 @@ export default async function Search({ searchParams }) {
     items = data || []
   }
   return (<main className="wrap">
-    <h2 className="sec">Recherche{q ? ` : ${q}` : ''}</h2>
-    {q.length < 2 && <p className="sans">Saisissez au moins 2 caractères dans la barre de recherche.</p>}
+    <div className="sec-head"><h1 className="sec">Recherche{q ? ` : ${q}` : ''}</h1></div>
+    {q.length < 2 && <p className="empty">Saisissez au moins 2 caractères dans la barre de recherche.</p>}
     {q.length >= 2 && <p className="meta">{items.length} résultat{items.length > 1 ? 's' : ''}</p>}
     <div className="grid">{items.map(a => (
       <Link key={a.slug} href={`/article/${a.slug}`} className="card">
-        {a.image_url ? <img className="thumb" src={a.image_url} alt={a.title} /> : <div className="ph">TOLOBANA INFO</div>}
+        <div className="media">{a.image_url ? <img className="thumb" src={a.image_url} alt={a.title} /> : <div className="ph">Tolobana Info</div>}</div>
         <div className="in"><span className="tag">{a.categories?.name}</span><h3>{a.title}</h3><p className="meta">{a.summary}</p></div></Link>))}</div>
   </main>)
 }
