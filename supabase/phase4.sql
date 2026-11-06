@@ -26,3 +26,6 @@ do $$ begin
   alter table articles add constraint articles_writer_fk foreign key (writer_id) references authors(id) on delete set null;
 exception when duplicate_object then null; end $$;
 create index if not exists articles_writer_idx on articles(writer_id);
+
+-- 4) Photo de profil pour les comptes de l'équipe (admin, éditeur, journaliste)
+alter table profiles add column if not exists photo_url text;

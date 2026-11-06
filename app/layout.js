@@ -1,14 +1,10 @@
 import './globals.css'
 import Link from 'next/link'
-import { Archivo, Source_Serif_4 } from 'next/font/google'
 import { getUserAndRole, atLeast } from '@/lib/supabase/server'
 import { signOut } from './login/actions'
 import Ticker from './components/Ticker'
 import Partners from './components/Partners'
 import Clock from './components/Clock'
-
-const sans = Archivo({ subsets: ['latin'], axes: ['wdth'], variable: '--f-sans', display: 'swap' })
-const serif = Source_Serif_4({ subsets: ['latin'], variable: '--f-serif', display: 'swap' })
 
 export const metadata = { title: { default: 'Tolobana Info', template: '%s | Tolobana Info' }, description: "L'information au cœur de l'actualité." }
 const MAIN_COUNT = 7
@@ -23,7 +19,7 @@ export default async function RootLayout({ children }) {
   const list = cats || []
   const link = c => <Link key={c.slug} href={`/?rubrique=${c.slug}`}>{c.name}</Link>
   return (
-    <html lang="fr"><body className={`${sans.variable} ${serif.variable}`}>
+    <html lang="fr"><body>
       <header className="top">
         <div className="wrap bar">
           <Link href="/" className="brand"><img src="/logo.png" alt="Tolobana Info" /></Link>
@@ -44,13 +40,6 @@ export default async function RootLayout({ children }) {
       <Ticker items={breaking} />
       {children}
       <Partners />
-      <footer>
-        <div className="wrap foot">
-          <div><img src="/logo.png" alt="Tolobana Info" className="foot-logo" /><p>L’information au cœur de l’actualité, depuis Kinshasa.</p></div>
-          <div><h3>Rubriques</h3>{list.slice(0, 8).map(link)}</div>
-          <div><h3>Le site</h3><Link href="/recherche">Recherche</Link><Link href={staff ? '/dashboard' : '/login'}>Espace rédaction</Link></div>
-        </div>
-        <div className="wrap legal">© Tolobana Info, Kinshasa, RDC. Contenus de démonstration identifiés « DÉMO ».</div>
-      </footer>
+      <footer><div className="wrap">© Tolobana Info : Kinshasa, RDC. Contenus de démonstration identifiés « DÉMO ». · <Link href={staff ? '/dashboard' : '/login'}>Espace rédaction</Link></div></footer>
     </body></html>)
 }

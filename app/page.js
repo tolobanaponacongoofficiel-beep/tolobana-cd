@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { supabaseServer } from '@/lib/supabase/server'
-const SEL = 'title,slug,summary,image_url,published_at,is_demo,categories(name,slug),profiles(name),authors(name)'
+import Avatar from './components/Avatar'
+const SEL = 'title,slug,summary,image_url,published_at,is_demo,categories(name,slug),profiles(name,photo_url),authors(name,photo_url)'
 const SECTIONS = [
   { title: 'Politique congolaise', slugs: ['politique'] },
   { title: 'Économie et finances', slugs: ['economie', 'finance-et-budget'] },
@@ -13,7 +14,7 @@ const SECTIONS = [
 const fmt = d => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Kinshasa' })
 const Img = ({ a }) => <div className="media">{a.image_url ? <img className="thumb" src={a.image_url} alt={a.title} /> : <div className="ph">Tolobana Info</div>}</div>
 const Tag = ({ a }) => <span className="tag">{a.categories?.name}{a.is_demo ? ' · DÉMO' : ''}</span>
-const By = ({ a }) => { const n = a.authors?.name || a.profiles?.name; return <span className="meta">{n ? `Par ${n} · ` : ''}{fmt(a.published_at)}</span> }
+const By = ({ a }) => { const w = a.authors || a.profiles; const n = w?.name; return <span className="meta by">{n && <Avatar name={n} url={w.photo_url} size="sm" />}{n ? `Par ${n} · ` : ''}{fmt(a.published_at)}</span> }
 const Card = ({ a }) => (
   <Link href={`/article/${a.slug}`} className="card"><Img a={a} /><div className="in"><Tag a={a} /><h3>{a.title}</h3><By a={a} /></div></Link>)
 function idsFor(cats, slugs) {

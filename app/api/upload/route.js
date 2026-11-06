@@ -14,7 +14,7 @@ export async function POST(req) {
   let fd
   try { fd = await req.formData() } catch { return fail('Requête invalide.', 400) }
   const file = fd.get('file')
-  const folder = fd.get('folder') === 'authors' ? 'authors' : 'articles'
+  const folder = ['authors', 'profiles'].includes(fd.get('folder')) ? fd.get('folder') : 'articles'
   if (folder === 'authors' && !atLeast(role, 'admin')) return fail('Accès réservé aux administrateurs.', 403)
   if (!file || typeof file === 'string' || !file.size) return fail('Aucun fichier reçu.', 400)
   const ext = TYPES[file.type]

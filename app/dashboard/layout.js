@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation'
 import { getUserAndRole, atLeast } from '@/lib/supabase/server'
 import { signOut } from '../login/actions'
 import DashNav from './DashNav'
+import Avatar from '../components/Avatar'
 
 export const metadata = { title: 'Espace rédaction', robots: { index: false, follow: false } }
 
@@ -10,7 +11,7 @@ export default async function DashboardLayout({ children }) {
   const { sb, user, role } = await getUserAndRole()
   if (!user) redirect('/login')
   if (!atLeast(role, 'journalist')) redirect('/')
-  const { data: me } = await sb.from('profiles').select('name').eq('id', user.id).single()
+  const { data: me } = await sb.from('profiles').select('name,photo_url').eq('id', user.id).single()
   const items = [
     { href: '/dashboard', label: 'Vue d’ensemble' },
     { href: '/dashboard/nouvel-article', label: 'Écrire un article' },
@@ -23,7 +24,7 @@ export default async function DashboardLayout({ children }) {
   return (
     <main className="wrap dash">
       <aside className="dash-side">
-        <div className="who"><span className="who-name">{me?.name || 'Mon espace'}</span><span className="who-role">{role}</span></div>
+        <div className="who"><Avatar name={me?.name} url={me?.photo_url} /><span className="who-text"><span className="who-name">{me?.name || 'Mon espace'}</span><span className="who-role">{role}</span></span></div>
         <DashNav items={items} />
         <form action={signOut}><button className="btn ghost sm out">Déconnexion</button></form>
       </aside>

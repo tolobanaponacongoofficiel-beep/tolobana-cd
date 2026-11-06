@@ -104,7 +104,8 @@ export async function review(fd) {
 export async function updateProfile(fd) {
   const { sb, user } = await getUserAndRole()
   if (!user) return
-  await sb.from('profiles').update({ name: String(fd.get('name')).trim(), bio: fd.get('bio') || null }).eq('id', user.id)
+  const photo = String(fd.get('photo_url') || '')
+  await sb.from('profiles').update({ name: String(fd.get('name')).trim(), bio: fd.get('bio') || null, photo_url: isMediaUrl(photo) ? photo : null }).eq('id', user.id)
   revalidatePath('/', 'layout')
   redirect('/dashboard/profil?ok=1')
 }

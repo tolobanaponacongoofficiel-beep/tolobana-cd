@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import { getUserAndRole, atLeast } from '@/lib/supabase/server'
-import { initials } from '@/lib/blocks'
+import Avatar from '../../components/Avatar'
 import ImageUploader from '../../components/ImageUploader'
 import ConfirmButton from '../../components/ConfirmButton'
 import { addAuthor, updateAuthor, deleteAuthor } from './actions'
@@ -8,8 +8,6 @@ import { addAuthor, updateAuthor, deleteAuthor } from './actions'
 export const metadata = { title: 'Rédacteurs' }
 const OK = { ajoute: 'Rédacteur ajouté.', modifie: 'Rédacteur modifié.', supprime: 'Rédacteur supprimé.' }
 const ERR = { nom: 'Le nom du rédacteur est obligatoire.', enregistrement: 'Enregistrement refusé. Vérifiez que le fichier phase4.sql a bien été exécuté dans Supabase.' }
-
-const Avatar = ({ a }) => a.photo_url ? <img className="avatar" src={a.photo_url} alt="" /> : <span className="avatar">{initials(a.name)}</span>
 
 export default async function Authors({ searchParams }) {
   const { sb, user, role } = await getUserAndRole()
@@ -35,7 +33,7 @@ export default async function Authors({ searchParams }) {
       {!list?.length && <p className="meta">Aucun rédacteur pour le moment. Ajoutez le premier ci-dessus.</p>}
       {(list || []).map(a => (
         <details key={a.id} className="arow">
-          <summary><Avatar a={a} /><span><b>{a.name}</b><span className="meta">{a.title || 'Rédacteur'}</span></span></summary>
+          <summary><Avatar name={a.name} url={a.photo_url} /><span><b>{a.name}</b><span className="meta">{a.title || 'Rédacteur'}</span></span></summary>
           <form action={updateAuthor} className="f">
             <input type="hidden" name="id" value={a.id} />
             <label>Nom affiché<input name="name" defaultValue={a.name} required maxLength={120} /></label>

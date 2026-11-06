@@ -1,12 +1,12 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { supabaseServer } from '@/lib/supabase/server'
-import { initials } from '@/lib/blocks'
+import Avatar from '../../components/Avatar'
 import ArticleBody from '../../components/ArticleBody'
 import Comments from './Comments'
 
 async function load(slug) {
-  const { data } = await supabaseServer().from('articles').select('*,categories(name),profiles(name),authors(id,name,title,photo_url)').eq('slug', slug).eq('status', 'published').single()
+  const { data } = await supabaseServer().from('articles').select('*,categories(name),profiles(name,photo_url),authors(id,name,title,photo_url)').eq('slug', slug).eq('status', 'published').single()
   return data
 }
 export async function generateMetadata({ params }) {
@@ -35,7 +35,7 @@ export default async function ArticlePage({ params }) {
       <h1>{a.title}</h1>
       {a.subtitle && <p className="deck">{a.subtitle}</p>}
       <div className="byline">
-        {writer?.photo_url ? <img className="avatar" src={writer.photo_url} alt="" /> : <span className="avatar">{initials(name)}</span>}
+        <Avatar name={name} url={writer?.photo_url || a.profiles?.photo_url} />
         <div><Link href={href}>{name}</Link>{writer?.title && <span className="role">{writer.title}</span>}<time dateTime={a.published_at}>{when}</time></div>
       </div>
       {a.image_url && <figure className="photo"><img src={a.image_url} alt={a.title} />{a.image_caption && <figcaption>{a.image_caption}</figcaption>}</figure>}
