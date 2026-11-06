@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { supabaseServer } from '@/lib/supabase/server'
 import Avatar from './components/Avatar'
+import TvStrip from './components/TvStrip'
 const SEL = 'title,slug,summary,image_url,published_at,is_demo,categories(name,slug),profiles(name,photo_url),authors(name,photo_url)'
 const SECTIONS = [
   { title: 'Politique congolaise', slugs: ['politique'] },
@@ -20,6 +21,12 @@ const Card = ({ a }) => (
 function idsFor(cats, slugs) {
   const byId = Object.fromEntries(cats.map(c => [c.id, c]))
   return cats.filter(c => slugs.includes(c.slug) || slugs.includes(byId[c.parent_id]?.slug)).map(c => c.id)
+}
+export async function generateMetadata({ searchParams }) {
+  const rub = searchParams?.rubrique
+  if (!rub) return { alternates: { canonical: '/' } }
+  const { data: c } = await supabaseServer().from('categories').select('name').eq('slug', String(rub)).single()
+  return c ? { title: c.name, description: `Toute l'actualité ${c.name} sur Tolobana Info.`, alternates: { canonical: `/?rubrique=${rub}` } } : {}
 }
 export default async function Home({ searchParams }) {
   const sb = supabaseServer()
@@ -65,6 +72,7 @@ export default async function Home({ searchParams }) {
           <Link key={a.slug} href={`/article/${a.slug}`} className="side-item"><Img a={a} />
             <div><Tag a={a} /><h3>{a.title}</h3><By a={a} /></div></Link>))}</div>
       </section>}
+      <TvStrip />
       <div className="cols">
         <div>
           {recent.length > 0 && <><div className="sec-head"><h2 className="sec">Dernières publications</h2></div>

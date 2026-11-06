@@ -15,7 +15,12 @@ async function load(slug) {
 }
 export async function generateMetadata({ params }) {
   const a = await load(params.slug)
-  return a ? { title: a.title, description: a.summary, openGraph: { title: a.title, description: a.summary, type: 'article', images: a.image_url ? [a.image_url] : [] } } : {}
+  return a ? {
+    title: a.title, description: a.summary, alternates: { canonical: `/article/${a.slug}` },
+    openGraph: { title: a.title, description: a.summary, type: 'article', url: `/article/${a.slug}`, siteName: 'Tolobana Info', locale: 'fr_CD',
+      publishedTime: a.published_at, modifiedTime: a.updated_at, images: a.image_url ? [a.image_url] : undefined },
+    twitter: { card: 'summary_large_image', title: a.title, description: a.summary, images: a.image_url ? [a.image_url] : undefined },
+  } : {}
 }
 export default async function ArticlePage({ params }) {
   const a = await load(params.slug)
