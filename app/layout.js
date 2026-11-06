@@ -40,6 +40,9 @@ export default async function RootLayout({ children }) {
       <Ticker items={breaking} />
       {children}
       <Partners />
-      <footer><div className="wrap">© Tolobana Info : Kinshasa, RDC. Contenus de démonstration identifiés « DÉMO ». · <Link href={staff ? '/dashboard' : '/login'}>Espace rédaction</Link></div></footer>
+      <footer><div className="wrap" style={{ display: 'grid', gap: 6 }}>
+        <p style={{ margin: 0 }}>© {new Date().getFullYear()} Tolobana Info. Tous droits réservés. Kinshasa, RDC.</p>
+        <p style={{ margin: 0 }}>Site conçu et maintenu par Ir Hilaire Tobalibi · <Link href={staff ? '/dashboard' : '/login'}>Espace rédaction</Link></p>
+      </div></footer>
     </body></html>)
 }
