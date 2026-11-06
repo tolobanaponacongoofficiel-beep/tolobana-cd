@@ -5,7 +5,7 @@ import { getUserAndRole } from '@/lib/supabase/server'
 import { supabaseAdmin } from '@/lib/supabase/admin'
 import { isUuid } from '@/lib/blocks'
 
-export const STAFF = ['journalist', 'editor', 'admin']
+const STAFF = ['journalist', 'editor', 'admin']
 const TOP = ['journalist', 'editor', 'admin', 'super_admin']
 
 // Seul le super-administrateur change les rôles. Il ne peut ni se modifier lui-même ni toucher un autre super-admin.
