@@ -115,7 +115,8 @@ export async function addPartner(fd) {
   if (!user || !atLeast(role, 'admin')) return
   const link = String(fd.get('link_url') || '').trim()
   const logo_url = await uploadImage(sb, user.id, fd.get('logo'), 'partners')
-  await sb.from('partners').insert({ name: String(fd.get('name')).trim(), link_url: /^https?:\/\//.test(link) ? link : null, logo_url })
+  const banner = String(fd.get('banner_url') || '')
+  await sb.from('partners').insert({ name: String(fd.get('name')).trim(), link_url: /^https?:\/\//.test(link) ? link : null, logo_url, banner_url: isMediaUrl(banner) ? banner : null })
   await sb.from('audit_log').insert({ user_id: user.id, action: 'partner_add', target: String(fd.get('name')) })
   revalidatePath('/', 'layout')
 }
