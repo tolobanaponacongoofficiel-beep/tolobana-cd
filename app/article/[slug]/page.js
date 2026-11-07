@@ -8,6 +8,9 @@ import Comments from './Comments'
 import ShareBar from '../../components/ShareBar'
 import PartnerBanner from '../../components/PartnerBanner'
 import ReadingProgress from '../../components/ReadingProgress'
+import ListenButton from '../../components/ListenButton'
+import { SITE_URL } from '@/lib/site'
+import '../../components/phase9.css'
 import '../../components/extras.css'
 import '../../components/phase8.css'
 
@@ -38,6 +41,8 @@ export default async function ArticlePage({ params }) {
     for (const r of data || []) if (related.length < 3 && !related.some(x => x.id === r.id)) related.push(r)
   }
 
+  const { data: dl } = await sb.from('dossier_articles').select('dossiers(title,slug,is_published)').eq('article_id', a.id)
+  const dossiers = (dl || []).map(x => x.dossiers).filter(d => d?.is_published)
   const mins = Math.max(1, Math.round((a.body || '').trim().split(/\s+/).length / 200))
   const h = headers()
   const url = `${h.get('x-forwarded-proto') || 'https'}://${h.get('x-forwarded-host') || h.get('host')}/article/${a.slug}`
@@ -48,7 +53,10 @@ export default async function ArticlePage({ params }) {
   const blocks = Array.isArray(a.blocks) && a.blocks.length ? a.blocks : String(a.body || '').split(/\n+/).filter(Boolean).map(text => ({ type: 'p', text }))
   const when = new Date(a.published_at).toLocaleString('fr-FR', { timeZone: 'Africa/Kinshasa', dateStyle: 'long', timeStyle: 'short' })
   const ld = { '@context': 'https://schema.org', '@type': 'NewsArticle', headline: a.title, datePublished: a.published_at, dateModified: a.last_update_at || a.updated_at,
-    image: a.image_url ? [a.image_url] : undefined, author: [{ '@type': 'Person', name }], publisher: { '@type': 'Organization', name: 'Tolobana Info' } }
+    image: [a.image_url || `${SITE_URL}/logo.png`], inLanguage: 'fr', isAccessibleForFree: true, articleSection: a.categories?.name, keywords: a.tags?.join(', ') || undefined,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/article/${a.slug}` },
+    author: [{ '@type': 'Person', name, url: `${SITE_URL}${href}` }],
+    publisher: { '@type': 'NewsMediaOrganization', name: 'Tolobana Info', logo: { '@type': 'ImageObject', url: `${SITE_URL}/logo.png` } } }
   return (
     <article className="full">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
@@ -63,6 +71,8 @@ export default async function ArticlePage({ params }) {
       </div>
       {a.image_url && <figure className="photo"><img src={a.image_url} alt={a.title} />{a.image_caption && <figcaption>{a.image_caption}</figcaption>}</figure>}
       <ShareBar url={url} title={a.title} />
+      <ListenButton text={[a.title, a.subtitle, a.body].filter(Boolean).join('. ').slice(0, 20000)} />
+      {dossiers.length > 0 && <div className="dossier-box"><span>Dossier</span>{dossiers.map(d => <Link key={d.slug} href={`/dossiers/${d.slug}`}>{d.title}</Link>)}</div>}
       <ArticleBody blocks={blocks} />
       {a.tags?.length > 0 && <div className="chips" aria-label="Mots-clés">{a.tags.map(t => <Link key={t} href={`/tag/${encodeURIComponent(t)}`}>#{t}</Link>)}</div>}
       {related?.length > 0 && <div className="related"><div className="sec-head"><h2 className="sec">À lire aussi</h2></div>

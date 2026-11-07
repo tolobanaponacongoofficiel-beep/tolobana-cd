@@ -11,6 +11,7 @@ import PwaRegister from './components/PwaRegister'
 import InstallPrompt from './components/InstallPrompt'
 import { SITE_URL } from '@/lib/site'
 import './components/phase8.css'
+import './components/phase9.css'
 
 const GA = /^G-[A-Z0-9]{4,}$/.test(process.env.NEXT_PUBLIC_GA_ID || '') ? process.env.NEXT_PUBLIC_GA_ID : null
 export const metadata = {
@@ -54,8 +55,8 @@ export default async function RootLayout({ children }) {
         </div>
       </header>
       <div className="menu-wrap"><div className="wrap">
-        <nav className="menu menu-all" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link>{list.map(link)}</nav>
-        <nav className="menu menu-split" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link>{list.slice(0, MAIN_COUNT).map(link)}
+        <nav className="menu menu-all" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link><Link href="/dossiers">Dossiers</Link>{list.map(link)}</nav>
+        <nav className="menu menu-split" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link><Link href="/dossiers">Dossiers</Link>{list.slice(0, MAIN_COUNT).map(link)}
           {list.length > MAIN_COUNT && <div className="more"><button type="button" className="more-btn" aria-haspopup="true">Plus ▾</button>
             <div className="more-pop">{list.slice(MAIN_COUNT).map(link)}</div></div>}</nav>
       </div></div>
@@ -63,7 +64,8 @@ export default async function RootLayout({ children }) {
       <div id="contenu" tabIndex={-1} style={{ outline: 'none' }}>{children}</div>
       <NewsletterBox />
       <Partners />
-      <footer><div className="wrap" style={{ display: 'grid', gap: 6 }}>
+      <footer><div className="wrap" style={{ display: 'grid', gap: 8 }}>
+        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/dossiers">Dossiers</Link><Link href="/sondages">Sondages</Link><a href="/rss.xml">RSS</a></nav>
         <p style={{ margin: 0 }}>© {new Date().getFullYear()} Tolobana Info. Tous droits réservés. Kinshasa, RDC.</p>
         <p style={{ margin: 0 }}>Site conçu et maintenu par Ir Hilaire Tobalibi · <Link href={staff ? '/dashboard' : '/login'}>Espace rédaction</Link></p>
       </div></footer>

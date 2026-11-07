@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { supabaseServer } from '@/lib/supabase/server'
 import Avatar from './components/Avatar'
 import TvStrip from './components/TvStrip'
+import TodayPoll from './components/TodayPoll'
+import { getSettings } from '@/lib/settings'
 const SEL = 'title,slug,summary,image_url,published_at,is_demo,categories(name,slug),profiles(name,photo_url),authors(name,photo_url)'
 const SECTIONS = [
   { title: 'Politique congolaise', slugs: ['politique'] },
@@ -52,7 +54,15 @@ export default async function Home({ searchParams }) {
     pub().limit(8),
     sb.from('articles').select('title,slug,views').eq('status', 'published').lte('published_at', now).order('views', { ascending: false }).limit(5),
   ])
-  const [hero, ...rest] = latest || []
+  let [hero, ...rest] = latest || []
+  // « À la une » choisie à la main (réglage de la rédaction) : remplace le dernier article.
+  try {
+    const cfg = JSON.parse((await getSettings(sb)).featured || 'null')
+    if (cfg?.id) {
+      const { data: f } = await pub().eq('id', cfg.id).maybeSingle()
+      if (f) { hero = { ...f, title: cfg.title?.trim() || f.title, summary: cfg.summary?.trim() || f.summary }; rest = (latest || []).filter(a => a.slug !== f.slug) }
+    }
+  } catch {}
   const side = rest.slice(0, 3), recent = rest.slice(3, 7)
   const used = new Set([hero, ...side].filter(Boolean).map(a => a.slug))
   const sections = (await Promise.all(SECTIONS.map(async s => {
@@ -81,7 +91,7 @@ export default async function Home({ searchParams }) {
             <div className="sec-head"><h2 className="sec">{s.title}</h2><Link href={`/?rubrique=${s.slugs[0]}`}>Voir toute la rubrique</Link></div>
             <div className="grid4">{s.items.map(a => <Card key={a.slug} a={a} />)}</div></section>))}
         </div>
-        <aside>{most?.length > 0 && <div className="most"><h2>Les plus lus</h2>
+        <aside><TodayPoll />{most?.length > 0 && <div className="most"><h2>Les plus lus</h2>
           <ol>{most.map(a => <li key={a.slug}><Link href={`/article/${a.slug}`}>{a.title}<br /><span className="meta">{a.views} lecture{a.views > 1 ? 's' : ''}</span></Link></li>)}</ol></div>}</aside>
       </div>
     </main>)
