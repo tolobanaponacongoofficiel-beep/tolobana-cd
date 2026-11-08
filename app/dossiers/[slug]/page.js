@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { supabaseServer } from '@/lib/supabase/server'
+import FollowDossier from '../../components/FollowDossier'
 import '../../components/phase9.css'
 const load = async slug => (await supabaseServer().from('dossiers').select('*').eq('slug', slug).eq('is_published', true).maybeSingle()).data
 export async function generateMetadata({ params }) {
@@ -20,6 +21,7 @@ export default async function Dossier({ params }) {
       <div className="txt"><span className="tag" style={{ color: 'var(--yellow)' }}>Dossier</span><h1>{d.title}</h1>{d.description && <p>{d.description}</p>}</div>
     </div>
     <p className="meta">{arts.length} article{arts.length > 1 ? 's' : ''} · <Link href="/dossiers" style={{ color: 'var(--blue)' }}>Tous les dossiers</Link></p>
+    <FollowDossier dossierId={d.id} title={d.title} />
     <div className="grid">{arts.map(a => (
       <Link key={a.slug} href={`/article/${a.slug}`} className="card">
         <div className="media">{a.image_url ? <img className="thumb" src={a.image_url} alt={a.title} loading="lazy" /> : <div className="ph">Tolobana Info</div>}</div>

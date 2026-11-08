@@ -5,6 +5,8 @@ import TvStrip from './components/TvStrip'
 import TodayPoll from './components/TodayPoll'
 import { getSettings } from '@/lib/settings'
 import AdSlot from './components/AdSlot'
+import EnContinu from './components/EnContinu'
+import StoriesStrip from './components/StoriesStrip'
 import { saverOn } from '@/lib/saver'
 const SEL = 'title,slug,summary,image_url,published_at,is_demo,categories(name,slug),profiles(name,photo_url),authors(name,photo_url)'
 const SECTIONS = [
@@ -84,9 +86,11 @@ export default async function Home({ searchParams }) {
           <Link key={a.slug} href={`/article/${a.slug}`} className="side-item"><Img a={a} />
             <div><Tag a={a} /><h3>{a.title}</h3><By a={a} /></div></Link>))}</div>
       </section>}
+      <StoriesStrip />
       <TvStrip />
       <div className="cols">
         <div>
+          <EnContinu limit={12} />
           {recent.length > 0 && <><div className="sec-head"><h2 className="sec">Dernières publications</h2></div>
             <div className="grid4">{recent.map(a => <Card key={a.slug} a={a} />)}</div></>}
           {sections.map(s => (<section key={s.title}>

@@ -13,6 +13,8 @@ import { SITE_URL } from '@/lib/site'
 import './components/phase8.css'
 import './components/phase9.css'
 import './components/phase10.css'
+import './components/phase11.css'
+import MobileBar from './components/MobileBar'
 import PrefsButtons from './components/PrefsButtons'
 import AdSlot from './components/AdSlot'
 import { saverOn } from '@/lib/saver'
@@ -49,6 +51,8 @@ export default async function RootLayout({ children }) {
   const saver = saverOn()
   const { data: lives } = await sb.from('lives').select('title,slug').eq('is_published', true).eq('status', 'live').order('created_at', { ascending: false }).limit(1)
   const live = lives?.[0]
+  const { data: newest } = await sb.from('articles').select('published_at').eq('status', 'published').lte('published_at', new Date().toISOString()).order('published_at', { ascending: false }).limit(1)
+  const latestAt = newest?.[0]?.published_at || null
   const staff = !!user && atLeast(role, 'journalist')
   const { data: cats } = await sb.from('categories').select('name,slug').eq('show_in_menu', true).is('parent_id', null).order('position')
   const { data: breaking } = await sb.from('articles').select('title,slug').eq('status', 'published').eq('is_breaking', true)
@@ -87,13 +91,14 @@ export default async function RootLayout({ children }) {
       <NewsletterBox />
       <Partners />
       <footer><div className="wrap" style={{ display: 'grid', gap: 8 }}>
-        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/verification">Vérification</Link><Link href="/sondages">Sondages</Link><Link href="/annoncer">Annoncer</Link><a href="/rss.xml">RSS</a></nav>
+        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/verification">Vérification</Link><Link href="/en-continu">En continu</Link><Link href="/stories">Stories</Link><Link href="/sondages">Sondages</Link><Link href="/annoncer">Annoncer</Link><a href="/rss.xml">RSS</a></nav>
         {(channel || socials.length > 0) && <div className="social-links" aria-label="Suivez-nous">
           {channel && <a href={channel} target="_blank" rel="noopener noreferrer" className="btn wa sm">Suivre sur WhatsApp</a>}
           {socials.map(x => <a key={x.label} href={x.url} target="_blank" rel="noopener noreferrer">{x.label}</a>)}</div>}
         <p style={{ margin: 0 }}>© {new Date().getFullYear()} {org}. Tous droits réservés. {set.address || 'Kinshasa, RDC.'}</p>
         <p style={{ margin: 0 }}>Site conçu et maintenu par Ir Hilaire Tobalibi · <Link href={staff ? '/dashboard' : '/login'}>Espace rédaction</Link></p>
       </div></footer>
+      <MobileBar liveSlug={live?.slug || null} latestAt={latestAt} user={!!user} staff={staff} />
       <PwaRegister /><InstallPrompt />
     </body></html>)
 }

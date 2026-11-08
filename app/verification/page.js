@@ -3,6 +3,7 @@ import { supabaseServer } from '@/lib/supabase/server'
 import { FACT, isFact } from '@/lib/fact'
 import FactBadge from '../components/FactBadge'
 import { fmtKin } from '@/lib/dates'
+import ClaimForm from '../components/ClaimForm'
 import '../components/phase10.css'
 export const metadata = { title: 'Vérification des faits', description: 'Rumeurs, informations virales et déclarations passées au crible par la rédaction.', alternates: { canonical: '/verification' } }
 export default async function Verification({ searchParams }) {
@@ -19,5 +20,6 @@ export default async function Verification({ searchParams }) {
         {a.fact_claim && <p className="meta" style={{ margin: '8px 0 0' }}>Affirmation : « {a.fact_claim} »</p>}
         <h3 style={{ margin: '6px 0' }}>{a.title}</h3><span className="meta">{fmtKin(a.published_at, { dateStyle: 'long' })}</span></Link>))}</div>
     {!data?.length && <p className="empty">Aucune vérification publiée pour le moment.</p>}
+    <ClaimForm />
   </main>)
 }
