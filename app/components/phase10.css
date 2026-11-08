@@ -1,0 +1,92 @@
+/* Phase 10 : thème sombre, mode léger, WhatsApp, direct, vérification, publicité */
+:root{--surf:#fff;color-scheme:light}
+html[data-theme=dark]{color-scheme:dark;--bg:#0a121b;--paper:#0a121b;--ink:#e7edf4;--muted:#9aaabb;--line:#243548;--blue-soft:#10283f;--surf:#121f2d;--surf-2:#172838;--blue:#2d9be6;--blue-dark:#1f86cc}
+html[data-theme=dark] body{background:var(--bg);color:var(--ink)}
+html[data-theme=dark] .panel,html[data-theme=dark] .hero-main,html[data-theme=dark] .side-item,html[data-theme=dark] .card,
+html[data-theme=dark] .most,html[data-theme=dark] article.full,html[data-theme=dark] .author-head,html[data-theme=dark] .partners,
+html[data-theme=dark] .stats>div,html[data-theme=dark] .ed-bar,html[data-theme=dark] .blk,html[data-theme=dark] .ed-preview,
+html[data-theme=dark] .kpis>div,html[data-theme=dark] .info-page,html[data-theme=dark] .dcard,html[data-theme=dark] .poll,
+html[data-theme=dark] .chips a,html[data-theme=dark] .partner,html[data-theme=dark] .live-entry,html[data-theme=dark] .ad-slot,
+html[data-theme=dark] .share10,html[data-theme=dark] .vcard{background:var(--surf);color:var(--ink)}
+html[data-theme=dark] .blk-head,html[data-theme=dark] .kind,html[data-theme=dark] .arow .f{background:var(--surf-2);color:var(--ink)}
+html[data-theme=dark] .blk-tools button,html[data-theme=dark] .fmt button{background:var(--surf-2);color:var(--ink);border-color:var(--line)}
+html[data-theme=dark] .blk-tools button:hover:not(:disabled),html[data-theme=dark] .fmt button:hover,html[data-theme=dark] .btn.ghost:hover{background:#1d3248}
+html[data-theme=dark] .btn.ghost{color:var(--ink);border-color:var(--line)}
+html[data-theme=dark] input,html[data-theme=dark] textarea,html[data-theme=dark] select{background:#0e1a27;color:var(--ink);border-color:#2c4159}
+html[data-theme=dark] input::placeholder,html[data-theme=dark] textarea::placeholder{color:#7d8fa3}
+html[data-theme=dark] .search input{background:#fff;color:#101a26}
+html[data-theme=dark] .meta,html[data-theme=dark] .empty,html[data-theme=dark] figcaption,html[data-theme=dark] .body cite,html[data-theme=dark] .kpis span,
+html[data-theme=dark] .axis30,html[data-theme=dark] .poll .tot,html[data-theme=dark] .listen .st,html[data-theme=dark] .log time{color:var(--muted)}
+html[data-theme=dark] .byline,html[data-theme=dark] .partners h2,html[data-theme=dark] .partner{color:#c0cddb}
+html[data-theme=dark] .body h3{color:#cfe0f2}
+html[data-theme=dark] .body p.b-link a{background:var(--blue-soft);color:#8fcaf5}
+html[data-theme=dark] .body a{color:#6fbaf0}
+html[data-theme=dark] .dossier-box{background:var(--blue-soft);color:var(--ink)}
+html[data-theme=dark] .chip{background:#1b2d41;color:#c7d5e4}
+html[data-theme=dark] .chip.published,html[data-theme=dark] .notice.ok{background:#0f2e1b;color:#7fdc9d;border-color:#1d5a36}
+html[data-theme=dark] .chip.submitted,html[data-theme=dark] .notice.restore{background:#3a2d08;color:#f3d681;border-color:#6b5415}
+html[data-theme=dark] .chip.rejected,html[data-theme=dark] .notice.bad{background:#3a1216;color:#f7a3a9;border-color:#7a2530}
+html[data-theme=dark] .bars .track,html[data-theme=dark] .pbar .track,html[data-theme=dark] .listen .lbar{background:#223449}
+html[data-theme=dark] .poll .note,html[data-theme=dark] .c-ok{color:#7fdc9d}
+html[data-theme=dark] hr,html[data-theme=dark] table,html[data-theme=dark] th,html[data-theme=dark] td{border-color:var(--line)}
+html[data-theme=dark] img{filter:brightness(.92)}
+html[data-theme=dark] .brand img,html[data-theme=dark] .avatar img{filter:none}
+html[data-theme=dark] header.top,html[data-theme=dark] .menu-wrap{border-bottom:1px solid #16304a}
+html[data-theme=dark] [style*="background:#fff"],html[data-theme=dark] [style*="background: #fff"],html[data-theme=dark] [style*="background:white"]{background:var(--surf)!important;color:var(--ink)!important}
+html[data-theme=dark] details{color:var(--ink)}
+html[data-theme=dark] .ph{filter:none}
+
+/* Boutons thème / mode léger */
+.prefs{display:flex;gap:6px;align-items:center}
+.pref-btn{font:600 .78rem var(--sans);background:transparent;color:#dbe7f3;border:1px solid #2b4763;border-radius:999px;padding:6px 11px;cursor:pointer;white-space:nowrap}
+.pref-btn:hover{background:#12304d;color:#fff}
+.pref-btn[aria-pressed=true]{background:var(--yellow);color:var(--navy);border-color:var(--yellow)}
+@media(max-width:640px){.pref-btn .lbl{display:none}.pref-btn{padding:7px 9px}}
+
+/* Mode léger */
+.saver-ph{display:grid;place-items:center;gap:6px;min-height:120px;background:linear-gradient(135deg,var(--navy),#0d3a5c);color:#9fb3c8;font:700 .75rem var(--sans);text-transform:uppercase;letter-spacing:.1em;width:100%;aspect-ratio:16/9;border:0}
+button.saver-ph{cursor:pointer}
+.saver-ph:hover{color:#fff}
+.saver-note{background:#fff7dc;color:#6b4a00;border:1px solid #f1dc9a;padding:8px 12px;border-radius:6px;font:.85rem var(--sans);margin:10px 0}
+html[data-theme=dark] .saver-note{background:#3a2d08;color:#f3d681;border-color:#6b5415}
+
+/* WhatsApp et partage */
+.share10{background:#fff;border-radius:var(--radius);padding:12px 14px;margin:12px 0;display:flex;gap:10px;flex-wrap:wrap;align-items:center;font-family:var(--sans)}
+.share10 .lead{font-weight:700;font-size:.9rem;margin-right:auto}
+.btn.wa{background:#1fa855;color:#fff}.btn.wa:hover{background:#178a45}
+.btn.wa-line{background:transparent;color:#1fa855;border:2px solid #1fa855;padding:8px 14px}.btn.wa-line:hover{background:#1fa855;color:#fff}
+.social-links{display:flex;gap:12px;flex-wrap:wrap;font:600 .85rem var(--sans)}
+.foot-wa{display:inline-block;margin:4px 0}
+
+/* Direct */
+.live-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#ff3b3b;margin-right:7px;animation:pulse 1.3s infinite;vertical-align:middle}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,59,59,.7)}100%{box-shadow:0 0 0 10px rgba(255,59,59,0)}}
+@media(prefers-reduced-motion:reduce){.live-dot{animation:none}}
+.live-banner{background:#14090b;color:#fff;border-bottom:3px solid var(--red);font:700 .9rem var(--sans)}
+.live-banner a{display:block;padding:9px 0}
+.live-banner span.t{font-weight:600}
+.live-head h1{margin:6px 0}
+.live-state{font:700 .75rem var(--sans);text-transform:uppercase;letter-spacing:.08em;color:var(--red)}
+.live-state.end{color:var(--muted)}
+.live-feed{list-style:none;margin:18px 0;padding:0;display:grid;gap:12px}
+.live-entry{background:#fff;border-radius:var(--radius);padding:14px 16px;border-left:4px solid var(--blue)}
+.live-entry.important{border-left-color:var(--red)}
+.live-entry time{font:700 .8rem var(--sans);color:var(--blue);display:block;margin-bottom:4px}
+.live-entry.important time{color:var(--red)}
+.live-entry p{margin:6px 0;white-space:pre-line}
+.live-entry img{border-radius:6px;margin-top:8px;max-height:420px;width:auto}
+.live-status{font:.8rem var(--sans);color:var(--muted)}
+
+/* Vérification */
+.fact{display:inline-flex;align-items:center;gap:6px;font:800 .8rem var(--sans);text-transform:uppercase;letter-spacing:.05em;padding:5px 11px;border-radius:999px;color:#fff}
+.fact.true{background:#15803d}.fact.false{background:#b91c1c}.fact.misleading{background:#b45309}.fact.unverified{background:#475569}
+.fact-box{border:2px solid var(--line);border-radius:var(--radius);padding:12px 14px;margin:14px 0;font-family:var(--sans);display:grid;gap:6px}
+.fact-box .claim{font-weight:600}
+.vcard{display:block;background:#fff;border-radius:var(--radius);padding:14px;border-left:4px solid var(--blue)}
+
+/* Publicité */
+.ad-slot{background:#fff;border-radius:var(--radius);padding:8px;margin:16px 0;text-align:center;font-family:var(--sans)}
+.ad-slot .ad-tag{display:block;font:700 .66rem var(--sans);text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:4px}
+.ad-slot img{margin:0 auto;border-radius:4px;max-height:280px;width:auto}
+.ad-slot.banner img{max-height:120px}
+.stat-row{font:.85rem var(--sans);color:var(--muted)}

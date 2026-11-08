@@ -4,6 +4,8 @@ import Avatar from './components/Avatar'
 import TvStrip from './components/TvStrip'
 import TodayPoll from './components/TodayPoll'
 import { getSettings } from '@/lib/settings'
+import AdSlot from './components/AdSlot'
+import { saverOn } from '@/lib/saver'
 const SEL = 'title,slug,summary,image_url,published_at,is_demo,categories(name,slug),profiles(name,photo_url),authors(name,photo_url)'
 const SECTIONS = [
   { title: 'Politique congolaise', slugs: ['politique'] },
@@ -15,7 +17,7 @@ const SECTIONS = [
   { title: 'Culture et musique', slugs: ['culture', 'musique'] },
 ]
 const fmt = d => new Date(d).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Kinshasa' })
-const Img = ({ a }) => <div className="media">{a.image_url ? <img className="thumb" src={a.image_url} alt={a.title} /> : <div className="ph">Tolobana Info</div>}</div>
+const Img = ({ a }) => <div className="media">{a.image_url && !saverOn() ? <img className="thumb" src={a.image_url} alt={a.title} /> : <div className="ph">Tolobana Info</div>}</div>
 const Tag = ({ a }) => <span className="tag">{a.categories?.name}{a.is_demo ? ' · DÉMO' : ''}</span>
 const By = ({ a }) => { const w = a.authors || a.profiles; const n = w?.name; return <span className="meta by">{n && <Avatar name={n} url={w.photo_url} size="sm" />}{n ? `Par ${n} · ` : ''}{fmt(a.published_at)}</span> }
 const Card = ({ a }) => (
@@ -91,7 +93,7 @@ export default async function Home({ searchParams }) {
             <div className="sec-head"><h2 className="sec">{s.title}</h2><Link href={`/?rubrique=${s.slugs[0]}`}>Voir toute la rubrique</Link></div>
             <div className="grid4">{s.items.map(a => <Card key={a.slug} a={a} />)}</div></section>))}
         </div>
-        <aside><TodayPoll />{most?.length > 0 && <div className="most"><h2>Les plus lus</h2>
+        <aside><AdSlot placement="sidebar" /><TodayPoll />{most?.length > 0 && <div className="most"><h2>Les plus lus</h2>
           <ol>{most.map(a => <li key={a.slug}><Link href={`/article/${a.slug}`}>{a.title}<br /><span className="meta">{a.views} lecture{a.views > 1 ? 's' : ''}</span></Link></li>)}</ol></div>}</aside>
       </div>
     </main>)

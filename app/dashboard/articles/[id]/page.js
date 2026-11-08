@@ -30,7 +30,7 @@ export default async function EditArticle({ params, searchParams }) {
     {ERR[searchParams?.err] && <p className="notice bad" role="alert">{ERR[searchParams.err]}</p>}
     <ArticleForm action={updateArticle} cats={cats} authors={authors || []} meName={me?.name || 'vous'} isEditor={editor}
       initial={{ id: a.id, status: a.status, title: a.title, subtitle: a.subtitle, category_id: a.category_id, writer_id: a.writer_id, summary: a.summary,
-        image_url: a.image_url, image_caption: a.image_caption, is_demo: a.is_demo, is_breaking: a.is_breaking, tags: a.tags, blocks,
+        image_url: a.image_url, image_caption: a.image_caption, is_demo: a.is_demo, is_breaking: a.is_breaking, fact_verdict: a.fact_verdict, fact_claim: a.fact_claim, tags: a.tags, blocks,
         updated_at: a.updated_at, published_at: a.published_at, scheduled: a.status === 'published' && !!a.published_at && new Date(a.published_at).getTime() > Date.now() }} />
   </>)
 }

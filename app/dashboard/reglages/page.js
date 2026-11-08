@@ -14,7 +14,7 @@ export default async function Reglages({ searchParams }) {
     <div className="dash-head"><h1>Pages et réglages</h1></div>
     {searchParams?.ok && <p style={{ color: '#1a7f3c', fontWeight: 600 }}>Enregistré ✓</p>}
     <section className="panel"><h2>Informations du média</h2>
-      <p className="meta">Ces informations remplissent automatiquement les pages À propos, Contact, Mentions légales, Charte et Confidentialité. Les champs vides s’affichent « [à compléter] » sur le site.</p>
+      <p className="meta">Ces informations remplissent automatiquement les pages À propos, Contact, Mentions légales, Charte et Confidentialité. Les champs vides s’affichent « non communiqué » sur le site : remplissez au moins la raison sociale, le directeur de la publication et l’e-mail.</p>
       <form className="f" action={saveSettings}>
         {SETTING_FIELDS.map(([k, label]) => <label key={k}>{label}<input name={k} maxLength={300} defaultValue={s[k] || ''} /></label>)}
         <div><button className="btn">Enregistrer</button></div></form></section>

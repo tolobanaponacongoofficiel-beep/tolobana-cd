@@ -5,6 +5,14 @@ import { redirect } from 'next/navigation'
 import { getUserAndRole, atLeast } from '@/lib/supabase/server'
 import { sanitizeBlocks, blocksToText, firstParagraph, isMediaUrl, isUuid } from '@/lib/blocks'
 import { kinshasaToISO } from '@/lib/dates'
+import { isFact } from '@/lib/fact'
+
+// Vérification des faits (éditeurs). On n'écrit ces colonnes que si nécessaire, pour ne rien casser avant l'exécution de phase10.sql.
+const factFields = (fd, hadBefore) => {
+  const v = String(fd.get('fact_verdict') || ''), has = isFact(v)
+  if (!has && !hadBefore) return {}
+  return { fact_verdict: has ? v : null, fact_claim: has ? String(fd.get('fact_claim') || '').trim().slice(0, 300) || null : null }
+}
 
 // Date future saisie dans le formulaire (heure de Kinshasa), sinon null.
 const futureDate = v => { const iso = kinshasaToISO(v); return iso && new Date(iso).getTime() > Date.now() ? iso : null }
@@ -43,6 +51,7 @@ export async function createArticle(fd) {
     image_url: isMediaUrl(image) ? image : null, image_caption: String(fd.get('image_caption') || '').trim().slice(0, 300) || null,
     status: intent === 'draft' ? 'draft' : 'submitted', is_demo: fd.get('is_demo') === 'on', tags: parseTags(fd.get('tags')),
     is_breaking: isEditor && fd.get('is_breaking') === 'on',
+    ...(isEditor ? factFields(fd, false) : {}),
   }).select('id').single()
   if (error || !row) redirect('/dashboard/nouvel-article?err=enregistrement')
 
@@ -86,6 +95,7 @@ export async function updateArticle(fd) {
     const writer = String(fd.get('writer_id') || '')
     upd.writer_id = isUuid(writer) ? writer : null
     upd.is_breaking = fd.get('is_breaking') === 'on'
+    Object.assign(upd, factFields(fd, fd.get('fact_had') === '1'))
   }
   const intent = String(fd.get('intent') || 'save')
   if (intent === 'submit' && old.status !== 'published') upd.status = 'submitted'

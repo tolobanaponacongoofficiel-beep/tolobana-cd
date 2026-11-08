@@ -155,6 +155,14 @@ export default function ArticleForm({ action, cats, authors, meName, isEditor, i
       <div className="panel">
         <label className="check"><input type="checkbox" name="is_demo" defaultChecked={!!initial?.is_demo} /> Contenu de démonstration (affiche « DÉMO »)</label>
         {isEditor && <label className="check"><input type="checkbox" name="is_breaking" defaultChecked={!!initial?.is_breaking} /> Dernière minute (bandeau rouge défilant)</label>}
+        {isEditor && <fieldset className="fact-fields" style={{ border: '1px solid var(--line)', borderRadius: 8, padding: '10px 12px', margin: '10px 0' }}>
+          <legend>Vérification des faits (facultatif)</legend>
+          <input type="hidden" name="fact_had" value={initial?.fact_verdict ? '1' : '0'} />
+          <label>Verdict
+            <select name="fact_verdict" defaultValue={initial?.fact_verdict || ''}>
+              <option value="">Pas une vérification</option><option value="true">Vrai</option><option value="false">Faux</option><option value="misleading">Trompeur</option><option value="unverified">Non vérifié</option></select></label>
+          <label>Affirmation vérifiée (la phrase ou la rumeur examinée)<input name="fact_claim" maxLength={300} defaultValue={initial?.fact_claim || ''} /></label>
+        </fieldset>}
         {edit && initial.status === 'published' && !initial.scheduled &&
           <label className="check"><input type="checkbox" name="mark_updated" /> Afficher « Mis à jour le … » sur l’article (à cocher pour une correction ou un ajout important)</label>}
         {showSchedule && (

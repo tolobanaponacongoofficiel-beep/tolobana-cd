@@ -1,4 +1,5 @@
 import { youtubeId, safeUrl } from '@/lib/blocks'
+import LazyMedia from './LazyMedia'
 
 // Mise en forme légère dans les paragraphes : **gras**, *italique*, [texte](https://lien)
 const RX = /(\*\*[^*\n]+\*\*|\*[^*\n]+\*|\[[^\]\n]+\]\(https?:\/\/[^\s)]+\))/g
@@ -18,7 +19,7 @@ function lines(text, k) {
   return String(text).split('\n').flatMap((line, li) => [li > 0 && <br key={`${k}-br${li}`} />, ...inline(line, `${k}-${li}`)])
 }
 
-export default function ArticleBody({ blocks }) {
+export default function ArticleBody({ blocks, saver = false }) {
   return (
     <div className="body">
       {(blocks || []).map((b, i) => {
@@ -29,14 +30,15 @@ export default function ArticleBody({ blocks }) {
           case 'h3': return b.text?.trim() ? <h3 key={k}>{b.text}</h3> : null
           case 'image': {
             const src = safeUrl(b.url)
-            return src ? <figure key={k} className="inline"><img src={src} alt={b.caption || ''} loading="lazy" />{b.caption && <figcaption>{b.caption}</figcaption>}</figure> : null
+            return src ? <figure key={k} className="inline">{saver ? <LazyMedia src={src} alt={b.caption} /> : <img src={src} alt={b.caption || ''} loading="lazy" />}{b.caption && <figcaption>{b.caption}</figcaption>}</figure> : null
           }
           case 'youtube': {
             const id = youtubeId(b.url)
             return id ? (
               <figure key={k} className="inline">
-                <div className="video"><iframe src={`https://www.youtube-nocookie.com/embed/${id}`} title={b.caption || 'Vidéo YouTube'} loading="lazy"
-                  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>
+                {saver ? <LazyMedia yt={id} alt={b.caption} label="Lire la vidéo (consomme des données)" /> : null}
+                {!saver && <div className="video"><iframe src={`https://www.youtube-nocookie.com/embed/${id}`} title={b.caption || 'Vidéo YouTube'} loading="lazy"
+                  allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; web-share" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen /></div>}
                 {b.caption && <figcaption>{b.caption}</figcaption>}
               </figure>) : null
           }
