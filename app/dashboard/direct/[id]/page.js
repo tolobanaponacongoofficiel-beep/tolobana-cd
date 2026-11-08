@@ -5,7 +5,8 @@ import { isUuid } from '@/lib/blocks'
 import { fmtKin } from '@/lib/dates'
 import ImageUploader from '../../../components/ImageUploader'
 import ConfirmButton from '../../../components/ConfirmButton'
-import { addEntry, deleteEntry, setLiveState, deleteLive } from '../actions'
+import { addEntry, deleteEntry, setLiveState, deleteLive, setStream } from '../actions'
+import { streamEmbed } from '@/lib/stream'
 export const metadata = { title: 'Gérer le direct' }
 const Op = ({ id, op, children, cls = 'btn sm gray' }) => <form action={setLiveState}><input type="hidden" name="live" value={id} /><input type="hidden" name="op" value={op} /><button className={cls}>{children}</button></form>
 export default async function LiveManage({ params, searchParams }) {
@@ -20,8 +21,14 @@ export default async function LiveManage({ params, searchParams }) {
     <div className="dash-head"><h1>{live.title}</h1></div>
     <p><span className={`chip ${on ? 'rejected' : ''}`}>{on ? 'en direct' : 'terminé'}</span> {!live.is_published && <span className="chip">masqué</span>} <Link href={`/direct/${live.slug}`} target="_blank">Voir la page publique ↗</Link></p>
     {searchParams?.err === '1' && <p className="err" role="alert">Écrivez le message à publier.</p>}
+    {searchParams?.err === '3' && <p className="err" role="alert">Lien de diffusion non reconnu. Utilisez un lien https YouTube, Facebook, Vimeo ou un fichier MP4.</p>}
     {searchParams?.err === '2' && <p className="err" role="alert">Ce direct est terminé : reprenez-le pour publier.</p>}
     {searchParams?.ok && <p style={{ color: '#1a7f3c', fontWeight: 600 }}>Publié ✓</p>}
+    <section className="panel"><h2>Diffusion vidéo</h2>
+      <form className="f" action={setStream}><input type="hidden" name="live" value={live.id} />
+        <label>Lien du direct (YouTube, Facebook, Vimeo ou MP4). Laissez vide pour retirer la vidéo.<input name="stream_url" type="url" maxLength={500} defaultValue={live.stream_url || ''} placeholder="https://www.youtube.com/live/…" /></label>
+        <p className="meta">{live.stream_url ? (streamEmbed(live.stream_url) ? `Lecteur actif : ${streamEmbed(live.stream_url).label}` : 'Lien non reconnu') : 'Aucune vidéo liée : seul le fil de messages est affiché.'}</p>
+        <div><button className="btn sm">Enregistrer le lien</button></div></form></section>
     {on && <section className="panel"><h2>Publier une mise à jour</h2>
       <form className="f" action={addEntry}><input type="hidden" name="live" value={live.id} />
         <label>Message<textarea name="body" rows={4} required maxLength={3000} placeholder="Ce qui vient de se passer…" /></label>

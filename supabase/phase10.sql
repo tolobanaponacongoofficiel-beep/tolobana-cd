@@ -42,6 +42,9 @@ drop policy if exists "live_entries lecture" on live_entries; drop policy if exi
 create policy "live_entries lecture" on live_entries for select using (exists (select 1 from lives l where l.id = live_id and (l.is_published or public.is_staff('editor'))));
 create policy "live_entries redaction" on live_entries for all using (public.is_staff('editor')) with check (public.is_staff('editor'));
 
+-- Lien de diffusion (YouTube, Facebook, Vimeo, MP4) pour suivre le direct en vidéo
+alter table lives add column if not exists stream_url text;
+
 -- 4) Publicités
 create table if not exists ads(
   id uuid primary key default gen_random_uuid(),

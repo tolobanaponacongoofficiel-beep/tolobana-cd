@@ -90,3 +90,7 @@ html[data-theme=dark] .saver-note{background:#3a2d08;color:#f3d681;border-color:
 .ad-slot img{margin:0 auto;border-radius:4px;max-height:280px;width:auto}
 .ad-slot.banner img{max-height:120px}
 .stat-row{font:.85rem var(--sans);color:var(--muted)}
+
+/* Lecteur du direct */
+.stream-box{margin:14px 0}
+video.stream{width:100%;border-radius:6px;background:#000;max-height:70vh}

@@ -4,6 +4,8 @@ import { saverOn } from '@/lib/saver'
 import { SITE_URL } from '@/lib/site'
 import { fmtKin } from '@/lib/dates'
 import LiveFeed from '../../components/LiveFeed'
+import StreamPlayer from '../../components/StreamPlayer'
+import { streamEmbed } from '@/lib/stream'
 import ShareBar from '../../components/ShareBar'
 import '../../components/phase10.css'
 export const dynamic = 'force-dynamic'
@@ -23,6 +25,7 @@ export default async function LivePage({ params }) {
   const { live, entries } = await load(params.slug)
   if (!live) notFound()
   const url = `${SITE_URL}/direct/${live.slug}`
+  const embed = streamEmbed(live.stream_url)
   const ld = { '@context': 'https://schema.org', '@type': 'LiveBlogPosting', headline: live.title, description: live.summary || undefined, url,
     coverageStartTime: live.created_at, ...(live.ended_at ? { coverageEndTime: live.ended_at } : {}), datePublished: live.created_at,
     dateModified: entries[0]?.created_at || live.created_at, inLanguage: 'fr',
@@ -36,6 +39,7 @@ export default async function LivePage({ params }) {
         {live.summary && <p className="deck">{live.summary}</p>}
         <p className="meta">Commencé le {fmtKin(live.created_at)}{live.ended_at ? ` · terminé le ${fmtKin(live.ended_at)}` : ''}</p>
       </div>
+      {embed && <div className="stream-box"><StreamPlayer embed={embed} saver={saverOn()} title={live.title} /></div>}
       <ShareBar url={url} title={live.title} />
       <LiveFeed slug={live.slug} initial={entries} initialStatus={live.status} saver={saverOn()} />
     </article></main>)
