@@ -7,20 +7,23 @@ import { kinshasaToISO } from '@/lib/dates'
 async function editor() { const c = await getUserAndRole(); if (!c.user || !atLeast(c.role, 'editor')) redirect('/dashboard'); return c }
 const STATUS = ['scheduled', 'live', 'finished']
 const score = v => { const s = String(v ?? '').trim(); if (s === '') return null; const n = parseInt(s, 10); return Number.isInteger(n) && n >= 0 && n < 100 ? n : null }
-const refresh = () => { revalidatePath('/sport'); revalidatePath('/') }
+const lines = v => String(v ?? '').replace(/\r/g, '').split('\n').map(s => s.trim()).filter(Boolean).slice(0, 12).join('\n').slice(0, 600) || null
+const refresh = () => { revalidatePath('/sport', 'layout'); revalidatePath('/') }
 export async function createMatch(fd) {
   const { sb, user } = await editor()
   const competition = String(fd.get('competition') || '').trim().slice(0, 80), home = String(fd.get('home') || '').trim().slice(0, 60), away = String(fd.get('away') || '').trim().slice(0, 60)
   const kickoff = kinshasaToISO(fd.get('kickoff'))
   if (!competition || !home || !away || !kickoff) redirect('/dashboard/sport?err=1')
-  const { error } = await sb.from('matches').insert({ competition, home, away, kickoff, created_by: user.id })
+  const venue = String(fd.get('venue') || '').trim().slice(0, 120) || null
+  const { error } = await sb.from('matches').insert({ competition, home, away, kickoff, venue, created_by: user.id })
   if (error) redirect('/dashboard/sport?err=2')
   refresh(); redirect('/dashboard/sport?ok=1')
 }
 export async function updateMatch(fd) {
   const { sb } = await editor(); const id = String(fd.get('id') || ''); if (!isUuid(id)) return
   const status = STATUS.includes(String(fd.get('status'))) ? String(fd.get('status')) : 'scheduled'
-  await sb.from('matches').update({ home_score: score(fd.get('hs')), away_score: score(fd.get('as')), status }).eq('id', id)
+  const { error } = await sb.from('matches').update({ home_score: score(fd.get('hs')), away_score: score(fd.get('as')), status, home_scorers: lines(fd.get('home_scorers')), away_scorers: lines(fd.get('away_scorers')), venue: String(fd.get('venue') || '').trim().slice(0, 120) || null }).eq('id', id)
+  if (error) redirect('/dashboard/sport?err=3')
   refresh(); redirect('/dashboard/sport?ok=1')
 }
 export async function deleteMatch(fd) {

@@ -51,21 +51,12 @@ html[data-theme=dark] .wx-cities button.on{background:var(--blue);border-color:v
 .svc-note{font-size:.85rem;color:var(--muted)}
 
 /* Sport */
-.sp-comp{margin:16px 0}.sp-comp h2{font-size:1rem;text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px;color:var(--blue)}
-.sp-list{list-style:none;margin:0;padding:0;background:var(--surf,#fff);border-radius:var(--radius);font-family:var(--sans)}
-.sp-list li{display:grid;grid-template-columns:64px 1fr auto 1fr;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line)}
-.sp-list li:last-child{border-bottom:0}
-.sp-when{font-size:.78rem;color:var(--muted)}.sp-home{text-align:right;font-weight:600}.sp-away{font-weight:600}
-.sp-score{font:800 1.1rem Georgia,serif;min-width:64px;text-align:center;background:var(--navy);color:#fff;border-radius:6px;padding:3px 8px}
-.sp-score.sched{background:transparent;color:var(--muted);font:600 .9rem var(--sans)}
-.sp-live{color:#ff3b3b;font:800 .68rem var(--sans);text-transform:uppercase}
 .sp-mini{display:grid;gap:2px;background:var(--surf,#fff);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;font-family:var(--sans);border-top:3px solid var(--blue)}
 .sp-mini div{display:flex;justify-content:space-between;gap:8px;font-size:.9rem}
-@media(max-width:520px){.sp-list li{grid-template-columns:1fr auto 1fr}.sp-when{grid-column:1/-1}}
 
 /* Thème sombre */
 html[data-theme=dark] .wx-mini,html[data-theme=dark] .rate-mini,html[data-theme=dark] .wx-days,html[data-theme=dark] .wx-card,html[data-theme=dark] .conv,
-html[data-theme=dark] .svc-tile,html[data-theme=dark] .svc-item,html[data-theme=dark] .svc-detail,html[data-theme=dark] .svc-form,html[data-theme=dark] .sp-list,html[data-theme=dark] .sp-mini{background:var(--surf);color:var(--ink)}
+html[data-theme=dark] .svc-tile,html[data-theme=dark] .svc-item,html[data-theme=dark] .svc-detail,html[data-theme=dark] .svc-form,html[data-theme=dark] .sp-mini{background:var(--surf);color:var(--ink)}
 html[data-theme=dark] .svc-contact{background:var(--blue-soft)}
 html[data-theme=dark] .svc-tag{color:#ff7a82}
 html[data-theme=dark] .rate-big div{background:#0f2a42}
