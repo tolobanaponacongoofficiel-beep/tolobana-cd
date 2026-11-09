@@ -10,7 +10,7 @@ export default async function sitemap() {
     sb.from('dossiers').select('slug,created_at').eq('is_published', true).limit(500),
     sb.from('lives').select('slug,created_at,ended_at').eq('is_published', true).order('created_at', { ascending: false }).limit(500),
   ])
-  const fixed = ['/tv', '/dossiers', '/sondages', '/direct', '/en-continu', '/stories', '/verification', '/annoncer', '/a-propos', '/contact', '/mentions-legales', '/charte-editoriale', '/confidentialite']
+  const fixed = ['/tv', '/dossiers', '/sondages', '/direct', '/en-continu', '/stories', '/meteo', '/taux', '/sport', '/services', '/services/deposer', ...['deces', 'communique', 'emploi', 'appel', 'annonce'].map(t => `/services/${t}`), '/verification', '/annoncer', '/a-propos', '/contact', '/mentions-legales', '/charte-editoriale', '/confidentialite']
   return [
     { url: SITE_URL, changeFrequency: 'hourly', priority: 1 },
     ...fixed.map(p => ({ url: `${SITE_URL}${p}`, changeFrequency: 'weekly', priority: 0.4 })),

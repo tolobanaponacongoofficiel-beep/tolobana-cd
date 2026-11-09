@@ -14,6 +14,7 @@ import './components/phase8.css'
 import './components/phase9.css'
 import './components/phase10.css'
 import './components/phase11.css'
+import './components/phase12.css'
 import MobileBar from './components/MobileBar'
 import PrefsButtons from './components/PrefsButtons'
 import AdSlot from './components/AdSlot'
@@ -79,8 +80,8 @@ export default async function RootLayout({ children }) {
         </div>
       </header>
       <div className="menu-wrap"><div className="wrap">
-        <nav className="menu menu-all" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/verification">Vérification</Link>{list.map(link)}</nav>
-        <nav className="menu menu-split" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/verification">Vérification</Link>{list.slice(0, MAIN_COUNT).map(link)}
+        <nav className="menu menu-all" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/sport">Sport</Link><Link href="/meteo">Météo</Link><Link href="/services">Services</Link><Link href="/verification">Vérification</Link>{list.map(link)}</nav>
+        <nav className="menu menu-split" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/sport">Sport</Link><Link href="/meteo">Météo</Link><Link href="/services">Services</Link><Link href="/verification">Vérification</Link>{list.slice(0, MAIN_COUNT).map(link)}
           {list.length > MAIN_COUNT && <div className="more"><button type="button" className="more-btn" aria-haspopup="true">Plus ▾</button>
             <div className="more-pop">{list.slice(MAIN_COUNT).map(link)}</div></div>}</nav>
       </div></div>
@@ -91,7 +92,7 @@ export default async function RootLayout({ children }) {
       <NewsletterBox />
       <Partners />
       <footer><div className="wrap" style={{ display: 'grid', gap: 8 }}>
-        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/verification">Vérification</Link><Link href="/en-continu">En continu</Link><Link href="/stories">Stories</Link><Link href="/sondages">Sondages</Link><Link href="/annoncer">Annoncer</Link><a href="/rss.xml">RSS</a></nav>
+        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/sport">Sport</Link><Link href="/meteo">Météo</Link><Link href="/services">Services</Link><Link href="/verification">Vérification</Link><Link href="/en-continu">En continu</Link><Link href="/stories">Stories</Link><Link href="/taux">Taux de change</Link><Link href="/sondages">Sondages</Link><Link href="/annoncer">Annoncer</Link><a href="/rss.xml">RSS</a></nav>
         {(channel || socials.length > 0) && <div className="social-links" aria-label="Suivez-nous">
           {channel && <a href={channel} target="_blank" rel="noopener noreferrer" className="btn wa sm">Suivre sur WhatsApp</a>}
           {socials.map(x => <a key={x.label} href={x.url} target="_blank" rel="noopener noreferrer">{x.label}</a>)}</div>}

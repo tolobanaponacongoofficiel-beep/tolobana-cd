@@ -1,0 +1,71 @@
+/* Phase 12 : météo, taux, services, sport */
+/* Météo */
+.wx-mini,.rate-mini{display:grid;gap:3px;background:var(--surf,#fff);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;font-family:var(--sans);border-top:3px solid var(--blue)}
+.wx-mini{grid-template-columns:auto 1fr;gap:12px;align-items:center}
+.wx-mini .wx-ic{color:var(--blue)}
+.wx-txt{display:grid;gap:1px}.wx-txt b{font-size:1rem}
+.wx-sub{font-size:.78rem;color:var(--muted)}
+.rate-mini strong{color:var(--blue)}
+.wx-cities{display:flex;gap:6px;overflow-x:auto;padding:6px 0 10px;-webkit-overflow-scrolling:touch}
+.wx-cities button{flex:0 0 auto;font:600 .85rem var(--sans);border:1px solid var(--line);background:var(--surf,#fff);color:var(--ink);padding:7px 13px;border-radius:999px;cursor:pointer}
+.wx-cities button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+html[data-theme=dark] .wx-cities button.on{background:var(--blue);border-color:var(--blue);color:#04121e}
+.wx-now{display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,var(--navy),#0d3a5c);color:#fff;border-radius:var(--radius);padding:20px;margin:6px 0 14px;font-family:var(--sans)}
+.wx-now h2{margin:0;font-size:1.1rem}.wx-now p{margin:2px 0}.wx-now .wx-sub{color:#b9cbe0}
+.wx-big{color:var(--yellow)}
+.wx-temp{font:800 2.6rem Georgia,serif;line-height:1.1}
+.wx-h{font-size:1.05rem;margin:20px 0 8px}
+.wx-days{list-style:none;margin:0;padding:0;background:var(--surf,#fff);border-radius:var(--radius);font-family:var(--sans)}
+.wx-days li{display:grid;grid-template-columns:minmax(80px,1.1fr) 40px 1.3fr auto 62px;gap:8px;align-items:center;padding:10px 14px;border-bottom:1px solid var(--line)}
+.wx-days li:last-child{border-bottom:0}
+.wx-d{font-weight:700;text-transform:capitalize}.wx-ic{color:var(--blue);display:inline-flex}
+.wx-l{color:var(--muted);font-size:.9rem}.wx-t span{color:var(--muted)}.wx-r{text-align:right;color:var(--blue);font-size:.85rem}
+@media(max-width:520px){.wx-days li{grid-template-columns:1fr 34px auto 52px}.wx-l{display:none}}
+.wx-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.wx-card{display:grid;gap:2px;justify-items:start;background:var(--surf,#fff);border-radius:var(--radius);padding:12px;font-family:var(--sans)}
+.wx-card:hover{outline:2px solid var(--blue)}
+.rate-big{display:flex;gap:14px;flex-wrap:wrap;margin:8px 0}
+.rate-big div{flex:1 1 200px;background:var(--navy);color:#fff;border-radius:var(--radius);padding:16px 18px;font-family:var(--sans)}
+.rate-big span{display:block;color:#b9cbe0;font-size:.85rem}.rate-big strong{font:800 1.9rem Georgia,serif;color:var(--yellow)}
+.conv{display:flex;gap:10px;flex-wrap:wrap;align-items:end;background:var(--surf,#fff);border-radius:var(--radius);padding:14px;font-family:var(--sans)}
+.conv label{display:grid;gap:3px;font-size:.8rem;color:var(--muted)}.conv input{width:140px}.conv select{width:96px}
+.conv-out{flex-basis:100%;margin:6px 0 0;font-size:1.15rem}.conv-out strong{color:var(--blue)}
+
+/* Services */
+.svc-hub{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px;margin:12px 0}
+.svc-tile{display:grid;gap:4px;background:var(--surf,#fff);border-radius:var(--radius);padding:16px;border-left:4px solid var(--blue);font-family:var(--sans)}
+.svc-tile:hover{outline:2px solid var(--blue)}.svc-tile b{font-size:1.05rem}.svc-tile span{color:var(--muted);font-size:.85rem}
+.svc-list{display:grid;gap:10px;margin:12px 0}
+.svc-item{display:block;background:var(--surf,#fff);border-radius:var(--radius);padding:14px 16px;border-left:4px solid var(--blue);font-family:var(--sans)}
+.svc-item.deces{border-left-color:#333}
+.svc-item h3{margin:2px 0 4px;font:700 1.05rem/1.3 Georgia,serif}
+.svc-item p{margin:2px 0;color:var(--muted);font-size:.9rem}
+.svc-tag{font:700 .68rem var(--sans);text-transform:uppercase;letter-spacing:.07em;color:var(--red)}
+.svc-detail{background:var(--surf,#fff);border-radius:var(--radius);padding:20px;font-family:var(--sans)}
+.svc-detail h1{font:800 1.7rem/1.25 Georgia,serif;margin:6px 0 10px}
+.svc-detail .body{white-space:pre-line;line-height:1.65}
+.svc-detail img{max-height:420px;width:auto;border-radius:6px;margin:10px 0}
+.svc-contact{background:var(--blue-soft,#eaf4fd);border-radius:8px;padding:12px 14px;margin-top:14px}
+.svc-form{display:grid;gap:10px;max-width:640px;background:var(--surf,#fff);border-radius:var(--radius);padding:16px;font-family:var(--sans)}
+.svc-form label{display:grid;gap:3px;font-size:.85rem;color:var(--muted)}
+.svc-note{font-size:.85rem;color:var(--muted)}
+
+/* Sport */
+.sp-comp{margin:16px 0}.sp-comp h2{font-size:1rem;text-transform:uppercase;letter-spacing:.06em;margin:0 0 6px;color:var(--blue)}
+.sp-list{list-style:none;margin:0;padding:0;background:var(--surf,#fff);border-radius:var(--radius);font-family:var(--sans)}
+.sp-list li{display:grid;grid-template-columns:64px 1fr auto 1fr;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line)}
+.sp-list li:last-child{border-bottom:0}
+.sp-when{font-size:.78rem;color:var(--muted)}.sp-home{text-align:right;font-weight:600}.sp-away{font-weight:600}
+.sp-score{font:800 1.1rem Georgia,serif;min-width:64px;text-align:center;background:var(--navy);color:#fff;border-radius:6px;padding:3px 8px}
+.sp-score.sched{background:transparent;color:var(--muted);font:600 .9rem var(--sans)}
+.sp-live{color:#ff3b3b;font:800 .68rem var(--sans);text-transform:uppercase}
+.sp-mini{display:grid;gap:2px;background:var(--surf,#fff);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;font-family:var(--sans);border-top:3px solid var(--blue)}
+.sp-mini div{display:flex;justify-content:space-between;gap:8px;font-size:.9rem}
+@media(max-width:520px){.sp-list li{grid-template-columns:1fr auto 1fr}.sp-when{grid-column:1/-1}}
+
+/* Thème sombre */
+html[data-theme=dark] .wx-mini,html[data-theme=dark] .rate-mini,html[data-theme=dark] .wx-days,html[data-theme=dark] .wx-card,html[data-theme=dark] .conv,
+html[data-theme=dark] .svc-tile,html[data-theme=dark] .svc-item,html[data-theme=dark] .svc-detail,html[data-theme=dark] .svc-form,html[data-theme=dark] .sp-list,html[data-theme=dark] .sp-mini{background:var(--surf);color:var(--ink)}
+html[data-theme=dark] .svc-contact{background:var(--blue-soft)}
+html[data-theme=dark] .svc-tag{color:#ff7a82}
+html[data-theme=dark] .rate-big div{background:#0f2a42}

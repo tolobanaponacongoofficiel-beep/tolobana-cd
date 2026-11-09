@@ -7,6 +7,9 @@ import { getSettings } from '@/lib/settings'
 import AdSlot from './components/AdSlot'
 import EnContinu from './components/EnContinu'
 import StoriesStrip from './components/StoriesStrip'
+import WeatherWidget from './components/WeatherWidget'
+import RateWidget from './components/RateWidget'
+import SportMini from './components/SportMini'
 import { saverOn } from '@/lib/saver'
 const SEL = 'title,slug,summary,image_url,published_at,is_demo,categories(name,slug),profiles(name,photo_url),authors(name,photo_url)'
 const SECTIONS = [
@@ -97,7 +100,7 @@ export default async function Home({ searchParams }) {
             <div className="sec-head"><h2 className="sec">{s.title}</h2><Link href={`/?rubrique=${s.slugs[0]}`}>Voir toute la rubrique</Link></div>
             <div className="grid4">{s.items.map(a => <Card key={a.slug} a={a} />)}</div></section>))}
         </div>
-        <aside><AdSlot placement="sidebar" /><TodayPoll />{most?.length > 0 && <div className="most"><h2>Les plus lus</h2>
+        <aside><AdSlot placement="sidebar" /><WeatherWidget /><RateWidget /><SportMini /><TodayPoll />{most?.length > 0 && <div className="most"><h2>Les plus lus</h2>
           <ol>{most.map(a => <li key={a.slug}><Link href={`/article/${a.slug}`}>{a.title}<br /><span className="meta">{a.views} lecture{a.views > 1 ? 's' : ''}</span></Link></li>)}</ol></div>}</aside>
       </div>
     </main>)
