@@ -1,3 +1,4 @@
+import BookmarkButton from '../../components/BookmarkButton'
 import Link from 'next/link'
 import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
@@ -87,6 +88,7 @@ export default async function ArticlePage({ params }) {
       <ShareBar url={url} title={a.title} />
       <div className="share10"><span className="lead">Cet article vous a servi ? Partagez-le.</span>
         <a className="btn wa" href={`https://wa.me/?text=${waText}`} target="_blank" rel="noopener noreferrer">Envoyer sur WhatsApp</a>
+         <BookmarkButton slug={a.slug} />
         {channel && <a className="btn wa-line" href={channel} target="_blank" rel="noopener noreferrer">Suivre notre chaîne</a>}</div>
       {verdict && <div className="fact-box"><FactBadge verdict={verdict} />{a.fact_claim && <span className="claim">Affirmation vérifiée : « {a.fact_claim} »</span>}</div>}
       {saver && <p className="saver-note">Mode léger activé : les images et vidéos s’affichent à la demande.</p>}

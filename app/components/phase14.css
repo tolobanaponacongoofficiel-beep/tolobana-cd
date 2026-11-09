@@ -1,0 +1,39 @@
+/* Phase 14 : agenda, favoris, revenus */
+.ag-cats{display:flex;gap:8px;overflow-x:auto;padding:4px 0 10px;font-family:var(--sans)}
+.ag-cats a{flex:none;padding:7px 13px;border-radius:999px;background:var(--surf,#fff);border:1px solid var(--line);font-size:.85rem;font-weight:600;color:inherit;text-decoration:none;white-space:nowrap}
+.ag-cats a.on{background:var(--blue);color:#fff;border-color:var(--blue)}
+.ag-month{font-size:1.3rem;text-transform:capitalize;margin:22px 0 6px;border-bottom:2px solid var(--blue);padding-bottom:4px}
+.ag-day h3{font:700 .9rem var(--sans);color:var(--muted);margin:14px 0 6px}.ag-day h3::first-letter,.ag-cap::first-letter{text-transform:uppercase}
+.ag-list{list-style:none;margin:0;padding:0;background:var(--surf,#fff);border-radius:var(--radius);font-family:var(--sans);overflow:hidden}
+.ag-list li{border-bottom:1px solid var(--line)}.ag-list li:last-child{border-bottom:0}
+.ag-list a{display:grid;grid-template-columns:58px 1fr auto;gap:12px;align-items:center;padding:12px 14px;color:inherit;text-decoration:none}
+.ag-list a:hover,.ag-list a:focus-visible{background:var(--blue-soft,#eef5fc)}
+.ag-time{font:800 1rem Georgia,serif;color:var(--blue)}
+.ag-main{display:grid;gap:2px;min-width:0}.ag-main small{color:var(--muted)}
+.ag-facts{list-style:none;margin:10px 0 14px;padding:0;display:grid;gap:8px;font-family:var(--sans)}
+.ag-facts li{background:var(--surf,#fff);border-radius:var(--radius);padding:10px 14px;display:grid;gap:2px}.ag-facts b{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;color:var(--blue)}
+.ag-img{width:100%;max-height:480px;object-fit:cover;border-radius:var(--radius);margin:0 0 12px}
+.ag-desc p{margin:0 0 .9em}
+.ag-mini{background:var(--surf,#fff);border-radius:var(--radius);padding:12px 14px;margin:0 0 14px;font-family:var(--sans);border-top:3px solid var(--yellow,#f2c230)}
+.ag-mini h2{font-size:1rem;margin:0 0 6px}.ag-mini ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.ag-mini li a{display:grid;gap:1px;color:inherit;text-decoration:none;font-weight:600;font-size:.92rem}.ag-mini time{font-size:.75rem;color:var(--blue);font-weight:700;text-transform:uppercase}
+.ag-mini .more{display:inline-block;margin-top:8px;font-size:.82rem;font-weight:700}
+.fav-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line);color:inherit;cursor:pointer}
+.fav-btn.on{background:var(--yellow,#f2c230);color:var(--navy,#0b2540);border-color:var(--yellow,#f2c230)}
+.fav-list{list-style:none;margin:12px 0;padding:0;display:grid;gap:10px}
+.fav-list li{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center;background:var(--surf,#fff);border-radius:var(--radius);padding:10px 12px;font-family:var(--sans)}
+.fav-list li:not(:has(img)){grid-template-columns:1fr auto}
+.fav-list img{width:96px;height:64px;object-fit:cover;border-radius:6px}
+.fav-list a{font:700 1.02rem Georgia,serif;color:inherit;text-decoration:none}
+.fav-x{border:0;background:transparent;font-size:1.6rem;line-height:1;cursor:pointer;color:var(--muted);padding:4px 10px}
+.rev-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:10px 0}
+.rev-cards div{background:var(--surf,#fff);border-radius:var(--radius);padding:14px 16px;display:grid;gap:4px;border-left:4px solid var(--blue)}
+.rev-cards span{font-size:.8rem;color:var(--muted)}.rev-cards b{font:800 1.4rem Georgia,serif}
+.rev-row{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.rev-table{width:100%;border-collapse:collapse;font-size:.9rem}.rev-table th,.rev-table td{padding:8px;text-align:center;border-bottom:1px solid var(--line)}
+.rev-table .l{text-align:left}.rev-table small{display:block;color:var(--muted);font-weight:400}
+.tablewrap{overflow-x:auto}
+@media(max-width:640px){.ag-list a{grid-template-columns:50px 1fr}.ag-list .chip{display:none}.rev-row{grid-template-columns:1fr}.fav-list img{width:72px;height:54px}}
+html[data-theme=dark] .ag-cats a,html[data-theme=dark] .ag-list,html[data-theme=dark] .ag-facts li,html[data-theme=dark] .ag-mini,html[data-theme=dark] .fav-list li,html[data-theme=dark] .rev-cards div{background:var(--surf);color:var(--ink)}
+html[data-theme=dark] .ag-cats a.on{background:var(--blue);color:#06121f}
+html[data-theme=dark] .ag-list a:hover{background:var(--surf-2)}

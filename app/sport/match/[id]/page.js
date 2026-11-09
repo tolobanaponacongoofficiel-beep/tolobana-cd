@@ -4,10 +4,11 @@ import { supabaseServer } from '@/lib/supabase/server'
 import { getMatch, dateLabel, timeOf, compByCode } from '@/lib/sport'
 import { SITE_URL } from '@/lib/site'
 import { saverOn } from '@/lib/saver'
+import AutoRefresh from '../../../components/AutoRefresh'
 import Crest from '../../../components/Crest'
 import { SportHero } from '../../../components/SportHero'
 import '../../../components/phase13.css'
-export const revalidate = 60
+export const revalidate = 30
 export async function generateMetadata({ params }) {
   const m = await getMatch(supabaseServer(), params.id)
   if (!m) return { title: 'Match' }
@@ -28,11 +29,13 @@ export default async function MatchPage({ params }) {
   return (<main className="wrap sport-page">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
     <SportHero crumb={comp ? <Link href={`/sport/${m.code.toLowerCase()}`}>← {m.competition}</Link> : <Link href="/sport">← Sport</Link>} title={m.competition} sub={[m.stage, m.matchday ? `Journée ${m.matchday}` : null].filter(Boolean).join(' · ') || undefined} />
+    {m.status === 'live' && <AutoRefresh every={30} />}
     <section className="sp-match" aria-label="Score">
       <div className="sp-team-big"><Crest src={m.hc} name={m.home} size={64} saver={saver} /><b>{m.home}</b></div>
       <div className="sp-mid">
         <div className={`sp-bigscore${m.status === 'live' ? ' live' : ''}`}>{has ? <>{m.hs}<i>-</i>{m.as}</> : <span className="vs">{timeOf(m.kickoff)}</span>}</div>
         <div className="sp-status">{m.status === 'live' ? <span className="sp-live">En direct</span> : status}</div>
+        {m.status === 'live' && <div className="sp-ht">Actualisation automatique</div>}
         {m.ht && m.status !== 'scheduled' && <div className="sp-ht">Mi-temps : {m.ht}</div>}
       </div>
       <div className="sp-team-big"><Crest src={m.ac} name={m.away} size={64} saver={saver} /><b>{m.away}</b></div>

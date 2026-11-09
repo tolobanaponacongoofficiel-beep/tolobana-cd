@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { supabaseServer } from '@/lib/supabase/server'
 import { getDay, byComp, today, shiftDay, validDay, hasFeed } from '@/lib/sport'
 import { saverOn } from '@/lib/saver'
+import AutoRefresh from '../components/AutoRefresh'
 import MatchList from '../components/MatchList'
 import { SportHero, CompNav } from '../components/SportHero'
 import '../components/phase13.css'
@@ -21,6 +22,7 @@ export default async function Sport({ searchParams }) {
     <nav className="sp-days" aria-label="Choisir un jour">
       {strip.map(d => <Link key={d} href={d === t0 ? '/sport' : `/sport?d=${d}`} className={d === day ? 'on' : ''}><b>{label(d)}</b><span>{DM.format(new Date(d + 'T12:00:00Z'))}</span></Link>)}
     </nav>
+    {live.length > 0 && day === t0 && <AutoRefresh every={60} />}
     {live.length > 0 && <section><h2 className="sp-h"><span className="sp-live">●</span> En direct</h2><MatchList matches={live} saver={saver} /></section>}
     <h2 className="sp-h cap">{title}</h2>
     {byComp(list.filter(m => m.status !== 'live')).map(([c, ms]) => <div key={c} className="sp-comp"><h3>{c}</h3><MatchList matches={ms} saver={saver} /></div>)}
