@@ -42,7 +42,7 @@ export async function generateMetadata() {
 }
 export const viewport = { themeColor: '#031523' }
 const THEME_SCRIPT = "(function(){try{var t=localStorage.getItem('tolobana-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)}catch(e){}})()"
-const MAIN_COUNT = 7
+const MAIN_COUNT = 3
 
 export default async function RootLayout({ children }) {
   const { sb, user, role } = await getUserAndRole()
@@ -86,8 +86,11 @@ export default async function RootLayout({ children }) {
         </div>
       </header>
       <div className="menu-wrap"><div className="wrap">
-        <MainNav count={8 + MAIN_COUNT} items={[{ href: '/', label: 'Accueil' }, { href: '/tv', label: 'Tolobana TV' }, { href: '/dossiers', label: 'Dossiers' }, { href: '/direct', label: 'Direct' }, { href: '/sport', label: 'Sport' }, { href: '/meteo', label: 'Météo' }, { href: '/services', label: 'Services' }, { href: '/verification', label: 'Vérification' },
-          ...list.map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name })), { href: '/agenda', label: 'Agenda' }, { href: '/en-continu', label: 'En continu' }]} />
+        <MainNav
+          primary={[{ href: '/', label: 'Accueil' }, { href: '/en-continu', label: 'En continu' }, { href: '/direct', label: 'Direct' }, { href: '/sport', label: 'Sport' }, ...list.slice(0, MAIN_COUNT).map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name }))]}
+          groups={[
+            { title: 'Rubriques', items: list.slice(MAIN_COUNT).map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name })) },
+            { title: 'Services et outils', items: [{ href: '/tv', label: 'Tolobana TV' }, { href: '/dossiers', label: 'Dossiers' }, { href: '/verification', label: 'Vérification' }, { href: '/stories', label: 'Stories' }, { href: '/meteo', label: 'Météo' }, { href: '/taux', label: 'Taux de change' }, { href: '/services', label: 'Services' }, { href: '/agenda', label: 'Agenda' }, { href: '/sondages', label: 'Sondages' }, { href: '/favoris', label: 'Mes favoris' }] }]} />
       </div></div>
       {live && <div className="live-banner"><div className="wrap"><Link href={`/direct/${live.slug}`}><span className="live-dot" aria-hidden="true" />EN DIRECT · <span className="t">{live.title}</span></Link></div></div>}
       <Ticker items={breaking} />

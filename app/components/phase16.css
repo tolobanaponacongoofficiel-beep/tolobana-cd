@@ -17,14 +17,20 @@ header.hdr{position:relative;background:var(--navy);color:#fff;border-bottom:0}
 .hs-panel[hidden]{display:none}
 .hs-panel form{display:flex;gap:8px}.hs-panel input{flex:1;min-width:0;border:0;border-radius:6px;padding:12px 14px;font-size:1rem;color:#101a26;background:#fff}
 .hdr-cta{margin:0}
-/* barre de rubriques claire, soulignée comme sur la BBC */
-.menu-wrap{background:#fff;border-top:0;border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(0,0,0,.03)}
-nav.menu>a,.more-btn{color:var(--ink);font-weight:700;font-size:.9rem;padding:14px 12px}
-nav.menu>a:hover,.more-btn:hover,.more:focus-within .more-btn{color:var(--ink);box-shadow:inset 0 -3px var(--blue)}
+/* barre de rubriques claire, soulignée comme sur la BBC, + bouton « Plus » */
+.menu-wrap{position:relative;background:#fff;border-top:0;border-bottom:1px solid var(--line);box-shadow:0 1px 0 rgba(0,0,0,.03)}
+.mnav{display:flex;align-items:stretch;justify-content:center}
+nav.menu{display:flex;align-items:stretch;flex:0 1 auto;min-width:0;overflow-x:auto;scrollbar-width:none}nav.menu::-webkit-scrollbar{display:none}
+nav.menu>a,.more-btn{color:var(--ink);font:700 .9rem var(--sans);padding:14px 12px;white-space:nowrap;background:none;border:0;cursor:pointer}
+nav.menu>a:hover,.more-btn:hover,.more-btn.open{color:var(--ink);box-shadow:inset 0 -3px var(--blue)}
 nav.menu>a.on{box-shadow:inset 0 -4px var(--blue);color:var(--ink)}
-nav.menu-split{justify-content:center}
-.more-pop{left:auto;right:0;background:#fff;border:1px solid var(--line);border-top:0;box-shadow:0 14px 30px rgba(0,0,0,.14)}
-.more-pop a{color:var(--ink)}.more-pop a:hover,.more-pop a.on{background:var(--blue-soft);color:var(--ink)}
+.more-btn{display:inline-flex;align-items:center;gap:7px;flex:none;border-left:1px solid var(--line)}
+.mnav-panel{position:absolute;left:0;right:0;top:100%;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 18px 30px rgba(0,0,0,.16);z-index:65;padding:6px 0 18px;max-height:70vh;overflow-y:auto}
+.mnav-panel[hidden]{display:none}
+.mnav-panel h3{font:800 .72rem var(--sans);text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin:14px 0 6px}
+.mnav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:2px 14px}
+.mnav-grid a{padding:10px 8px;border-radius:6px;font:700 .92rem var(--sans);color:var(--ink)}
+.mnav-grid a:hover,.mnav-grid a.on{background:var(--blue-soft)}
 /* bandeau « Dernière minute » */
 .ticker{background:#fff;color:var(--ink);border-bottom:1px solid var(--line);font-size:.92rem;font-weight:600}
 .ticker-label{background:var(--red);color:#fff;font-size:.74rem;letter-spacing:.08em;padding:11px 16px;display:flex;align-items:center}
@@ -32,9 +38,10 @@ nav.menu-split{justify-content:center}
 .ticker-row a{color:var(--ink)}.ticker-row a:hover{text-decoration:underline}
 .ticker-row a::before{color:var(--red)}
 /* thème sombre */
-html[data-theme=dark] .menu-wrap,html[data-theme=dark] .ticker,html[data-theme=dark] .more-pop{background:var(--surf);border-color:#1b3350}
-html[data-theme=dark] nav.menu>a,html[data-theme=dark] .more-btn,html[data-theme=dark] .more-pop a,html[data-theme=dark] .ticker-row a{color:var(--ink)}
-html[data-theme=dark] .more-pop a:hover,html[data-theme=dark] .more-pop a.on{background:var(--surf-2);color:var(--ink)}
+html[data-theme=dark] .menu-wrap,html[data-theme=dark] .ticker,html[data-theme=dark] .mnav-panel{background:var(--surf);border-color:#1b3350}
+html[data-theme=dark] nav.menu>a,html[data-theme=dark] .more-btn,html[data-theme=dark] .mnav-grid a,html[data-theme=dark] .ticker-row a{color:var(--ink)}
+html[data-theme=dark] .more-btn{border-left-color:#1b3350}
+html[data-theme=dark] .mnav-grid a:hover,html[data-theme=dark] .mnav-grid a.on{background:var(--surf-2)}
 html[data-theme=dark] .ticker-label{background:#b3101a}
 /* téléphone */
 @media(max-width:640px){
@@ -46,7 +53,9 @@ html[data-theme=dark] .ticker-label{background:#b3101a}
   .hs-lbl{display:none}.hs-btn{padding:9px}
   .hdr-cta{display:none}
   .hdr-r .prefs{display:flex;gap:6px}
-  nav.menu>a{padding:12px 11px;font-size:.88rem}
+  nav.menu>a,.more-btn{padding:12px 11px;font-size:.88rem}
+  .mnav{justify-content:flex-start}
+  .mnav-grid{grid-template-columns:1fr 1fr}
   .ticker-label{font-size:.66rem;padding:10px 10px}
   .ticker{font-size:.85rem}
 }

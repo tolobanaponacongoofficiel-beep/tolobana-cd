@@ -1,3 +1,4 @@
+import '../components/phase15.css'
 import { redirect } from 'next/navigation'
 import { getUserAndRole, atLeast } from '@/lib/supabase/server'
 import { signOut } from '../login/actions'
@@ -19,7 +20,7 @@ export default async function DashboardLayout({ children }) {
     { href: '/dashboard', label: 'Vue d’ensemble' },
     { href: '/dashboard/nouvel-article', label: 'Écrire un article' },
     { href: '/dashboard/articles', label: atLeast(role, 'editor') ? 'Tous les articles' : 'Mes articles' },
-    ...(atLeast(role, 'admin') ? [{ href: '/dashboard/auteurs', label: 'Rédacteurs' }] : []),
+    ...(atLeast(role, 'admin') ? [{ href: '/dashboard/auteurs', label: 'Rédacteurs' }, { href: '/dashboard/rubriques', label: 'Rubriques' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/moderation', label: 'Commentaires' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/statistiques', label: 'Statistiques' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/videos', label: 'Tolobana TV' }] : []),
