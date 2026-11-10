@@ -32,7 +32,7 @@ export default async function SportDash({ searchParams }) {
           <input name="venue" defaultValue={m.venue ?? ''} placeholder="Stade" maxLength={120} style={{ width: 180 }} aria-label="Stade" />
           <textarea name="home_scorers" defaultValue={m.home_scorers ?? ''} rows={2} placeholder={`Buteurs ${m.home} (un par ligne, ex. Mputu 12')`} style={{ flex: '1 1 220px' }} aria-label={`Buteurs ${m.home}`} />
           <textarea name="away_scorers" defaultValue={m.away_scorers ?? ''} rows={2} placeholder={`Buteurs ${m.away} (un par ligne)`} style={{ flex: '1 1 220px' }} aria-label={`Buteurs ${m.away}`} />
-          <button className="btn sm">Mettre à jour</button> <a className="btn ghost sm" href={`/sport/match/${m.id}`} target="_blank" rel="noopener noreferrer">Voir la page</a></form>
+          <button className="btn sm">Mettre à jour</button> <a className="btn sm" href={`/dashboard/sport/${m.id}`}>Détails : équipes, buteurs, cartons, compositions</a> <a className="btn ghost sm" href={`/sport/match/${m.id}`} target="_blank" rel="noopener noreferrer">Voir la page</a></form>
         <form action={deleteMatch}><input type="hidden" name="id" value={m.id} /><ConfirmButton message="Supprimer ce match ?">Supprimer</ConfirmButton></form></div>))}
       {!list?.length && <p className="meta">Aucun match pour le moment.</p>}</section></>)
 }
