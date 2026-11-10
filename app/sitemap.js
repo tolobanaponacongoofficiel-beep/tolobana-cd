@@ -12,7 +12,7 @@ export default async function sitemap() {
     sb.from('lives').select('slug,created_at,ended_at').eq('is_published', true).order('created_at', { ascending: false }).limit(500),
     sb.from('events').select('id,starts_at').eq('is_published', true).gte('starts_at', now).limit(500),
   ])
-  const fixed = ['/tv', '/dossiers', '/sondages', '/direct', '/en-continu', '/stories', '/meteo', '/taux', '/sport', ...COMPS.map(c => `/sport/${c.code.toLowerCase()}`), '/agenda', '/services', '/services/deposer', ...['deces', 'communique', 'emploi', 'appel', 'annonce'].map(t => `/services/${t}`), '/verification', '/annoncer', '/a-propos', '/contact', '/mentions-legales', '/charte-editoriale', '/confidentialite']
+  const fixed = ['/tv', '/dossiers', '/sondages', '/direct', '/direct-foot', '/en-continu', '/stories', '/meteo', '/taux', '/sport', ...COMPS.map(c => `/sport/${c.code.toLowerCase()}`), '/agenda', '/services', '/services/deposer', ...['deces', 'communique', 'emploi', 'appel', 'annonce'].map(t => `/services/${t}`), '/verification', '/annoncer', '/a-propos', '/contact', '/mentions-legales', '/charte-editoriale', '/confidentialite']
   return [
     { url: SITE_URL, changeFrequency: 'hourly', priority: 1 },
     ...fixed.map(p => ({ url: `${SITE_URL}${p}`, changeFrequency: 'weekly', priority: 0.4 })),
