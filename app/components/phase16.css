@@ -59,3 +59,6 @@ html[data-theme=dark] .ticker-label{background:#b3101a}
   .ticker-label{font-size:.66rem;padding:10px 10px}
   .ticker{font-size:.85rem}
 }
+
+/* barre du bas : « Tolobana TV » doit tenir en entier */
+@media(max-width:760px){.mbar .lb{font-size:.64rem;letter-spacing:-.01em}}
