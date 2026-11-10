@@ -3,7 +3,7 @@ import { getUserAndRole, atLeast } from '@/lib/supabase/server'
 import { fmtKin } from '@/lib/dates'
 import { addStream, toggleStream, deleteStream, addGuide, deleteGuide } from './actions'
 export const metadata = { title: 'Direct Foot' }
-const ERR = { 1: 'Donnez un titre à la diffusion.', 2: 'Lien refusé : collez un lien https YouTube, Facebook, Vimeo ou un fichier MP4/WebM.', 3: 'Renseignez le match, la date et heure, et les chaînes.', 4: 'Enregistrement impossible : exécutez supabase/phase18.sql.' }
+const ERR = { 1: 'Donnez un titre à la diffusion.', 2: 'Lien refusé : veuillez insérer un lien https valide (YouTube, Facebook, zlive.st, etc.).', 3: 'Renseignez le match, la date et heure, et les chaînes.', 4: 'Enregistrement impossible : exécutez supabase/phase18.sql.' }
 export default async function DirectFootAdmin({ searchParams }) {
   const { sb, user, role } = await getUserAndRole()
   if (!user || !atLeast(role, 'editor')) redirect('/dashboard')

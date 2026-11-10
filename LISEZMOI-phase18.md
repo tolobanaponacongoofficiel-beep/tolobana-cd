@@ -11,3 +11,7 @@
 
 ## Important
 Collez uniquement des liens que vous avez le droit de diffuser (CAF, fédérations, clubs, diffuseurs partenaires). Les flux zlive.st (beIN, DAZN, SuperSport) sont piratés : le site risquerait un blocage, des poursuites et la perte de la monétisation. Le lecteur refuse d'ailleurs tout lien hors YouTube/Facebook/Vimeo/MP4.
+
+
+## Mise à jour Validation Stream
+La validation dans `lib/stream.js` a été mise à jour pour accepter les intégrations zlive.st (beIN Turkey 1, SuperSport 56, DAZN 1 Italia, DAZN LaLiga).

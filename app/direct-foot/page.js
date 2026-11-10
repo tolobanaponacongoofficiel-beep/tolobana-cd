@@ -14,15 +14,13 @@ export const metadata = { title: 'Direct Foot : matchs en direct et où les rega
 export const revalidate = 30
 export default async function DirectFoot({ searchParams }) {
   const sb = supabaseServer(), saver = saverOn()
-  // Next.js versions with async searchParams expose it as a Promise.
-  const params = await searchParams
   const [list, st, gd] = await Promise.all([
     getDay(sb, today()).catch(() => []),
     sb.from('foot_streams').select('id,title,embed_url,note').eq('is_active', true).order('sort').order('created_at', { ascending: false }).limit(12),
     sb.from('foot_guide').select('id,match_label,competition,kickoff,channels,link_url').eq('is_active', true).gte('kickoff', new Date(Date.now() - 3 * 3600e3).toISOString()).order('kickoff').limit(40)])
   const live = (list || []).filter(m => m.status === 'live')
   const streams = (st.data || []).filter(s => streamEmbed(s.embed_url))
-  const cur = streams.find(s => s.id === params?.c) || streams[0]
+  const cur = streams.find(s => s.id === searchParams?.c) || streams[0]
   const embed = cur ? streamEmbed(cur.embed_url) : null
   const guide = gd.data || []
   return (<main className="wrap sport-page df-page">
@@ -31,7 +29,7 @@ export default async function DirectFoot({ searchParams }) {
     <section><h2 className="sp-h">{live.length > 0 && <span className="sp-live">● </span>}En direct maintenant</h2>
       {live.length ? <MatchList matches={live} saver={saver} /> : <p className="empty">Aucun match en cours. Voyez le programme ci-dessous ou <Link href="/sport">tous les scores</Link>.</p>}</section>
     <section><h2 className="sp-h">Vidéo en direct</h2>
-      {streams.length > 0 && <nav className="df-chips" aria-label="Choisir une diffusion">{streams.map(s => <Link key={s.id} href={`/direct-foot?c=${encodeURIComponent(s.id)}`} className={s.id === cur?.id ? 'on' : ''} aria-current={s.id === cur?.id ? 'page' : undefined}>{s.title}</Link>)}</nav>}
+      {streams.length > 1 && <nav className="df-chips" aria-label="Choisir une diffusion">{streams.map(s => <Link key={s.id} href={`/direct-foot?c=${s.id}`} className={s.id === cur.id ? 'on' : ''}>{s.title}</Link>)}</nav>}
       {embed ? <div className="stream-box df-player"><StreamPlayer key={cur.id} embed={embed} saver={saver} title={cur.title} />{cur.note && <p className="meta">{cur.note}</p>}</div>
         : <p className="empty">Aucune diffusion officielle en ce moment.</p>}</section>
     <section><h2 className="sp-h">Où regarder</h2>
