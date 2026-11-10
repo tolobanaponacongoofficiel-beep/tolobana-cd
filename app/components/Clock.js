@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 
 const TZ = 'Africa/Kinshasa'
 
-// Date + heure:minute:seconde en direct (heure de Kinshasa).
+// Date + heure:minute:seconde en direct (heure de Kinshasa), affichées sous le logo.
 // Le serveur envoie la date et « --:--:-- » ; le navigateur prend le relais, donc pas d'écart d'hydratation.
 export default function Clock({ initialDate }) {
   const [now, setNow] = useState(null)
@@ -21,6 +21,7 @@ export default function Clock({ initialDate }) {
   return (
     <div className="clock" title="Heure de Kinshasa">
       <span className="clock-date">{date}</span>
+      <span className="clock-sep" aria-hidden="true">·</span>
       <span className="clock-time" aria-hidden={!now || undefined}>{time}</span>
     </div>)
 }

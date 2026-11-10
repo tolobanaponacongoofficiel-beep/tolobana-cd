@@ -5,6 +5,8 @@ import { signOut } from './login/actions'
 import Ticker from './components/Ticker'
 import Partners from './components/Partners'
 import Clock from './components/Clock'
+import HeaderSearch from './components/HeaderSearch'
+import MainNav from './components/MainNav'
 import Script from 'next/script'
 import NewsletterBox from './components/NewsletterBox'
 import PwaRegister from './components/PwaRegister'
@@ -15,6 +17,7 @@ import './components/phase9.css'
 import './components/phase10.css'
 import './components/phase11.css'
 import './components/phase12.css'
+import './components/phase16.css'
 import MobileBar from './components/MobileBar'
 import PrefsButtons from './components/PrefsButtons'
 import AdSlot from './components/AdSlot'
@@ -67,23 +70,24 @@ export default async function RootLayout({ children }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG) }} />
       {GA && <><Script src={`https://www.googletagmanager.com/gtag/js?id=${GA}`} strategy="afterInteractive" />
         <Script id="ga" strategy="afterInteractive">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA}');`}</Script></>}
-      <header className="top">
-        <div className="wrap bar">
-          <Link href="/" className="brand"><img src="/logo.png" alt={org} /></Link>
-          <div className="bar-right">
+      <header className="top hdr">
+        <div className="wrap hdr-in">
+          <div className="hdr-l"><HeaderSearch /></div>
+          <div className="hdr-c">
+            <Link href="/" className="brand"><img src="/logo.png" alt={org} /></Link>
             <Clock initialDate={date} />
+          </div>
+          <div className="hdr-r">
             <PrefsButtons saver={saver} />
-            <form action="/recherche" className="search" role="search"><input name="q" placeholder="Rechercher…" aria-label="Rechercher" /><button className="btn">OK</button></form>
-            {staff && <Link href="/dashboard" className="btn gold">Mon espace</Link>}
-            {user && !staff && <form action={signOut}><button className="btn ghost light sm">Déconnexion</button></form>}
+            {staff ? <Link href="/dashboard" className="btn gold hdr-cta">Mon espace</Link>
+              : user ? <form action={signOut} className="hdr-cta"><button className="btn ghost light sm">Déconnexion</button></form>
+              : <Link href="/login" className="btn ghost light sm hdr-cta">Connexion</Link>}
           </div>
         </div>
       </header>
       <div className="menu-wrap"><div className="wrap">
-        <nav className="menu menu-all" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/sport">Sport</Link><Link href="/meteo">Météo</Link><Link href="/services">Services</Link><Link href="/verification">Vérification</Link>{list.map(link)}</nav>
-        <nav className="menu menu-split" aria-label="Rubriques"><Link href="/">Accueil</Link><Link href="/tv">Tolobana TV</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/sport">Sport</Link><Link href="/meteo">Météo</Link><Link href="/services">Services</Link><Link href="/verification">Vérification</Link>{list.slice(0, MAIN_COUNT).map(link)}
-          {list.length > MAIN_COUNT && <div className="more"><button type="button" className="more-btn" aria-haspopup="true">Plus ▾</button>
-            <div className="more-pop">{list.slice(MAIN_COUNT).map(link)}</div></div>}</nav>
+        <MainNav count={8 + MAIN_COUNT} items={[{ href: '/', label: 'Accueil' }, { href: '/tv', label: 'Tolobana TV' }, { href: '/dossiers', label: 'Dossiers' }, { href: '/direct', label: 'Direct' }, { href: '/sport', label: 'Sport' }, { href: '/meteo', label: 'Météo' }, { href: '/services', label: 'Services' }, { href: '/verification', label: 'Vérification' },
+          ...list.map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name })), { href: '/agenda', label: 'Agenda' }, { href: '/en-continu', label: 'En continu' }]} />
       </div></div>
       {live && <div className="live-banner"><div className="wrap"><Link href={`/direct/${live.slug}`}><span className="live-dot" aria-hidden="true" />EN DIRECT · <span className="t">{live.title}</span></Link></div></div>}
       <Ticker items={breaking} />
