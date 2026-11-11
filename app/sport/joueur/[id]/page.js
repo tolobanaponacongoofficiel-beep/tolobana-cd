@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { supabaseServer } from '@/lib/supabase/server'
+import { safe } from '@/lib/safe'
 import { getPlayer } from '@/lib/teams'
 import { GROUP_LABEL, canLink } from '@/lib/sport'
 import { saverOn } from '@/lib/saver'
@@ -8,14 +9,18 @@ import Crest from '../../../components/Crest'
 import { SportHero } from '../../../components/SportHero'
 import '../../../components/phase13.css'
 import '../../../components/phase15.css'
+function Fail({ msg }) {
+  return (<main className="wrap sport-page"><p className="empty">Cette fiche est momentanément indisponible. <Link href="/sport">Retour au sport</Link></p><details className="meta"><summary>Détail technique</summary>{msg}</details></main>)
+}
 export const revalidate = 300
 export async function generateMetadata({ params }) {
-  const p = await getPlayer(supabaseServer(), params.id)
+  const p = (await safe(() => getPlayer(supabaseServer(), params.id), 'sport/joueur/meta')).v
   return p ? { title: `${p.name} : fiche joueur`, description: `${p.name}${p.team ? `, ${p.team.name}` : ''} : poste, âge, nationalité et statistiques.`, alternates: { canonical: `/sport/joueur/${params.id}` } } : { title: 'Joueur' }
 }
 const fr = d => new Date(d + 'T12:00:00Z').toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
 export default async function Player({ params }) {
-  const p = await getPlayer(supabaseServer(), params.id); if (!p) notFound()
+  const r = await safe(() => getPlayer(supabaseServer(), params.id), 'sport/joueur'); if (r.err) return <Fail msg={r.err} />
+  const p = r.v; if (!p) notFound()
   const saver = saverOn()
   const pos = p.group ? GROUP_LABEL[p.group]?.replace(/s$/, '') : p.position
   const facts = [['Poste', pos], ['Numéro', p.num], ['Âge', p.age != null ? `${p.age} ans` : null], ['Naissance', p.born ? fr(String(p.born).slice(0, 10)) : null], ['Nationalité', p.nationality]].filter(([, v]) => v)

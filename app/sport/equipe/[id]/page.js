@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { supabaseServer } from '@/lib/supabase/server'
+import { safe } from '@/lib/safe'
 import { getTeam } from '@/lib/teams'
 import { GROUP_LABEL, GROUP_ORDER, canLink, dateLabel, timeOf } from '@/lib/sport'
 import { saverOn } from '@/lib/saver'
@@ -9,13 +10,17 @@ import MatchList from '../../../components/MatchList'
 import { SportHero } from '../../../components/SportHero'
 import '../../../components/phase13.css'
 import '../../../components/phase15.css'
+function Fail({ msg }) {
+  return (<main className="wrap sport-page"><p className="empty">Cette fiche est momentanément indisponible. <Link href="/sport">Retour au sport</Link></p><details className="meta"><summary>Détail technique</summary>{msg}</details></main>)
+}
 export const revalidate = 300
 export async function generateMetadata({ params }) {
-  const t = await getTeam(supabaseServer(), params.id)
+  const t = (await safe(() => getTeam(supabaseServer(), params.id), 'sport/equipe/meta')).v
   return t ? { title: `${t.name} : effectif, résultats et historique`, description: `${t.name} : effectif actuel, derniers résultats, prochains matchs et historique du club.`, alternates: { canonical: `/sport/equipe/${params.id}` } } : { title: 'Équipe' }
 }
 export default async function Team({ params }) {
-  const t = await getTeam(supabaseServer(), params.id); if (!t) notFound()
+  const r = await safe(() => getTeam(supabaseServer(), params.id), 'sport/equipe'); if (r.err) return <Fail msg={r.err} />
+  const t = r.v; if (!t) notFound()
   const saver = saverOn()
   const groups = GROUP_ORDER.map(g => [g, t.squad.filter(p => p.group === g)]).filter(([, l]) => l.length), other = t.squad.filter(p => !GROUP_ORDER.includes(p.group))
   const facts = [['Pays', t.country], ['Ville', t.city], ['Fondé en', t.founded], ['Stade', t.stadium], ['Entraîneur', t.coach], ['Couleurs', t.colors], ['Compétitions', t.comps?.length ? t.comps.join(', ') : null]].filter(([, v]) => v)
