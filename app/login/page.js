@@ -1,13 +1,7 @@
-'use client'
-import { useFormState } from 'react-dom'
-import { signIn, signUp } from './actions'
-export default function Login() {
-  const [s1, a1] = useFormState(signIn, null)
-  const [s2, a2] = useFormState(signUp, null)
-  return (<main className="wrap">
-    <form className="f" action={a1}><h2>Connexion</h2>{s1?.error && <p style={{ color: 'red' }}>{s1.error}</p>}
-      <input name="email" type="email" placeholder="E-mail" required /><input name="password" type="password" placeholder="Mot de passe" required /><button className="btn">Se connecter</button></form>
-    <form className="f" action={a2}><h2>Créer un compte</h2>{s2?.error && <p style={{ color: 'red' }}>{s2.error}</p>}
-      <input name="name" placeholder="Nom" required /><input name="email" type="email" placeholder="E-mail" required /><input name="password" type="password" minLength={8} placeholder="Mot de passe (8+)" required /><button className="btn">S’inscrire</button></form>
-  </main>)
+import LoginForm from './LoginForm'
+export const metadata = { title: 'Connexion', robots: { index: false } }
+export default function Login({ searchParams }) {
+  const list = String(process.env.OAUTH_PROVIDERS || '').split(',').map(s => s.trim().toLowerCase()).filter(p => p === 'google' || p === 'facebook')
+  const err = { 1: 'Fournisseur inconnu.', 2: 'Connexion impossible pour le moment.', 3: 'Lien invalide ou expiré. Réessayez.' }[searchParams?.err]
+  return <LoginForm providers={list} urlError={err} />
 }
