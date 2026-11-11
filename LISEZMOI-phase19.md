@@ -1,10 +1,12 @@
-# Phase 19 : page de connexion plein écran
+# Phase 19 : page de connexion avec l'en-tête du site
 
 ## À faire
 Téléverser le dossier `app` sur GitHub (remplace `app/login/*`, ajoute `app/auth/callback/route.js`). Aucun SQL.
 
 ## Nouveautés
-- `/login` : page plein écran (sans en-tête du site), carte centrale, e-mail + mot de passe, « Mot de passe oublié ? », « Créer un compte », « Retour au site ».
+- **Espace rédaction** : adresse `/redaction`, page de connexion plein écran AVANT d'entrer dans le site. Le tableau de bord y renvoie tout visiteur non connecté. Lien discret « Espace rédaction » dans le pied de page ; le bouton « Connexion » est retiré de l'en-tête public.
+- `/login` reste pour les lecteurs (commentaires, favoris).
+- `/login` : page avec l'en-tête et le pied de page du site, carte centrale, e-mail + mot de passe, « Mot de passe oublié ? », « Créer un compte », « Retour au site ».
 - Mot de passe oublié : lien par e-mail puis page `/login/reinitialiser`.
 - Inscription : si Supabase exige la confirmation e-mail, un message l'indique (plus de boucle de redirection).
 - Boutons Google et Facebook : masqués tant que vous ne les activez pas (voir ci-dessous).

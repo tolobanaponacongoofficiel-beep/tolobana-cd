@@ -81,7 +81,7 @@ export default async function RootLayout({ children }) {
             <PrefsButtons saver={saver} />
             {staff ? <Link href="/dashboard" className="btn gold hdr-cta">Mon espace</Link>
               : user ? <form action={signOut} className="hdr-cta"><button className="btn ghost light sm">Déconnexion</button></form>
-              : <Link href="/login" className="btn ghost light sm hdr-cta">Connexion</Link>}
+              : null}
           </div>
         </div>
       </header>
@@ -104,7 +104,7 @@ export default async function RootLayout({ children }) {
           {channel && <a href={channel} target="_blank" rel="noopener noreferrer" className="btn wa sm">Suivre sur WhatsApp</a>}
           {socials.map(x => <a key={x.label} href={x.url} target="_blank" rel="noopener noreferrer">{x.label}</a>)}</div>}
         <p style={{ margin: 0 }}>© {new Date().getFullYear()} {org}. Tous droits réservés. {set.address || 'Kinshasa, RDC.'}</p>
-        <p style={{ margin: 0 }}>Site conçu et maintenu par Ir Hilaire Tobalibi · <Link href={staff ? '/dashboard' : '/login'}>Espace rédaction</Link></p>
+        <p style={{ margin: 0 }}>Site conçu et maintenu par Ir Hilaire Tobalibi · <Link href={staff ? '/dashboard' : '/redaction'}>Espace rédaction</Link></p>
       </div></footer>
       <MobileBar liveSlug={live?.slug || null} latestAt={latestAt} user={!!user} staff={staff} />
       <PwaRegister /><InstallPrompt />
