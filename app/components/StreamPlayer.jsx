@@ -5,7 +5,7 @@ export default function StreamPlayer({ embed }) {
       <iframe
         src={embed}
         style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }}
-        allow="autoplay; fullscreen; picture-in-picture"
+        allow="autoplay; fullscreen; picture-in-picture; encrypted-media"
         allowFullScreen
       />
     </div>
