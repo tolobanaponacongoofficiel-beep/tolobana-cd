@@ -45,7 +45,7 @@ export default async function MatchPage({ params }) {
   const total = has ? m.hs + m.as : 0
   return (<main className="wrap sport-page">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
-    <SportHero crumb={comp ? <Link href={`/sport/${m.code.toLowerCase()}`}>← {m.competition}</Link> : <Link href="/sport">← Sport</Link>} title={m.competition} sub={[m.stage, m.matchday ? `Journée ${m.matchday}` : null].filter(Boolean).join(' · ') || undefined} />
+    <SportHero crumb={comp ? <Link href={`/sport/${m.code.toLowerCase()}`}>← {m.competition}</Link> : <Link href="/sport">← Sport</Link>} logo={m.clogo} title={m.competition} sub={[m.stage, m.matchday ? `Journée ${m.matchday}` : null].filter(Boolean).join(' · ') || undefined} />
     {m.status === 'live' && <AutoRefresh every={30} />}
     <section className="sp-match" aria-label="Score">
       <Team side="home" />

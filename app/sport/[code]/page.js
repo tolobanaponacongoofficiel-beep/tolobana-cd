@@ -40,7 +40,7 @@ export default async function Competition({ params, searchParams }) {
       {ms.length ? <MatchList matches={ms} showDate saver={saver} /> : <p className="empty">Aucun match pour cette période.</p>}</>)
   }
   return (<main className="wrap sport-page">
-    <SportHero crumb={<Link href="/sport">← Sport</Link>} title={comp.name} sub={`${comp.country}${info?.season ? ` · saison ${info.season}` : ''}`} />
+    <SportHero crumb={<Link href="/sport">← Sport</Link>} logo={info?.emblem} title={comp.name} sub={`${comp.country}${info?.season ? ` · saison ${info.season}` : ''}`} />
     <CompNav current={code} />
     <div className="sp-tabs" role="tablist">{TABS.map(([k, l]) => <Link key={k} href={k === 'matchs' ? base : `${base}?t=${k}`} className={tab === k ? 'on' : ''} role="tab" aria-selected={tab === k}>{l}</Link>)}</div>
     {body}

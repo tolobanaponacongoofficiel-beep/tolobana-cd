@@ -1,12 +1,16 @@
 import Link from 'next/link'
 import { COMPS } from '@/lib/sport'
 import './phase13.css'
-export function SportHero({ title, sub, crumb }) {
+import './phase22.css'
+export function SportHero({ title, sub, crumb, logo }) {
   return (<header className="sp-hero">
     <div className="sp-hero-in">
-      {crumb && <div className="sp-crumb">{crumb}</div>}
-      <h1>{title}</h1>
-      {sub && <p>{sub}</p>}
+      <div className="sp-hero-txt">
+        {crumb && <div className="sp-crumb">{crumb}</div>}
+        <h1>{title}</h1>
+        {sub && <p>{sub}</p>}
+      </div>
+      {logo && <span className="sp-hero-logo"><img src={logo} alt="" loading="lazy" referrerPolicy="no-referrer" /></span>}
     </div></header>)
 }
 export function CompNav({ current }) {

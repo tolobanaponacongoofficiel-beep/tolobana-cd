@@ -1,0 +1,8 @@
+.sp-hero.sp-hero{background:linear-gradient(120deg,#031523 0%,#0d2c4a 60%,#124a73 100%)}
+.sp-hero.sp-hero:before,.sp-hero.sp-hero:after{display:none}
+.sp-hero-in{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.sp-hero-txt{min-width:0}
+.sp-hero-logo{flex:none;display:grid;place-items:center;width:84px;height:84px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.sp-hero-logo img{width:62px;height:62px;object-fit:contain}
+.sp-hero p{color:#c9d8e6}
+@media(max-width:520px){.sp-hero-logo{width:64px;height:64px}.sp-hero-logo img{width:46px;height:46px}}

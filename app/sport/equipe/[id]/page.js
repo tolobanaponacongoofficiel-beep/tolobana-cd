@@ -28,7 +28,7 @@ export default async function Team({ params }) {
   const ld = { '@context': 'https://schema.org', '@type': 'SportsTeam', name: t.full, sport: 'Football', ...(t.stadium ? { location: t.stadium } : {}), ...(t.website ? { url: t.website } : {}) }
   return (<main className="wrap sport-page">
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, '\\u003c') }} />
-    <SportHero crumb={<Link href="/sport">← Sport</Link>} title={t.name} sub={[t.country, t.city].filter(Boolean).join(' · ') || undefined} />
+    <SportHero crumb={<Link href="/sport">← Sport</Link>} logo={t.crest} title={t.name} sub={[t.country, t.city].filter(Boolean).join(' · ') || undefined} />
     <section className="tm-head"><Crest src={t.crest} name={t.name} size={88} saver={saver} />
       {facts.length > 0 && <dl className="tm-facts">{facts.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>}</section>
     {t.history && <section className="sp-panel"><h2>Historique</h2>{t.history.split('\n').filter(Boolean).map((p, i) => <p key={i}>{p}</p>)}</section>}

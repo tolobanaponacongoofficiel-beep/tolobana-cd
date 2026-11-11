@@ -12,7 +12,7 @@ export const metadata = { title: 'Espace rédaction', robots: { index: false, fo
 // Tout l'espace rédaction est réservé à l'équipe : un lecteur connecté est renvoyé à l'accueil.
 export default async function DashboardLayout({ children }) {
   const { sb, user, role } = await getUserAndRole()
-  if (!user) redirect('/redaction')
+  if (!user) redirect('/login')
   if (!atLeast(role, 'journalist')) redirect('/')
   const { data: me } = await sb.from('profiles').select('name,photo_url').eq('id', user.id).single()
   const missing = atLeast(role, 'admin') ? missingRequired(await getSettings(sb)) : []
@@ -28,7 +28,7 @@ export default async function DashboardLayout({ children }) {
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/partenaires', label: 'Partenaires' }] : []),
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/equipe', label: 'Équipe et rôles' }] : []),
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/journal', label: 'Journal d’activité' }] : []),
-    ...(atLeast(role, 'editor') ? [{ href: '/dashboard/a-la-une', label: 'À la une' }, { href: '/dashboard/dossiers', label: 'Dossiers' }, { href: '/dashboard/sondages', label: 'Sondages' }, { href: '/dashboard/direct', label: 'Direct' }, { href: '/dashboard/direct-foot', label: 'Direct Foot' }, { href: '/dashboard/stories', label: 'Stories' }, { href: '/dashboard/services', label: 'Services' }, { href: '/dashboard/sport', label: 'Sport' }, { href: '/dashboard/equipes', label: 'Équipes' }, { href: '/dashboard/agenda', label: 'Agenda' }] : []),
+    ...(atLeast(role, 'editor') ? [{ href: '/dashboard/a-la-une', label: 'À la une' }, { href: '/dashboard/dossiers', label: 'Dossiers' }, { href: '/dashboard/sondages', label: 'Sondages' }, { href: '/dashboard/direct', label: 'Direct' }, { href: '/dashboard/direct-foot', label: 'Direct Foot' }, { href: '/dashboard/diagnostic-sport', label: 'Diagnostic sport' }, { href: '/dashboard/stories', label: 'Stories' }, { href: '/dashboard/services', label: 'Services' }, { href: '/dashboard/sport', label: 'Sport' }, { href: '/dashboard/equipes', label: 'Équipes' }, { href: '/dashboard/agenda', label: 'Agenda' }] : []),
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/publicites', label: 'Publicités' }, { href: '/dashboard/revenus', label: 'Revenus' }] : []),
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/messages', label: 'Messages reçus' }, { href: '/dashboard/reglages', label: 'Pages et réglages' }] : []),
     { href: '/dashboard/profil', label: 'Mon profil' },
