@@ -1,0 +1,4 @@
+footer a.credit{display:inline-flex;align-items:center;gap:6px;color:#ffd400;font-weight:800;text-decoration:none;padding:2px 10px 2px 8px;border:1px solid rgba(255,212,0,.55);border-radius:999px;background:rgba(255,212,0,.1);transition:background .15s,color .15s}
+footer a.credit svg{width:15px;height:15px;color:#25d366}
+footer a.credit:hover{background:#ffd400;color:#031523}
+footer a.credit:hover svg{color:#128c4a}
