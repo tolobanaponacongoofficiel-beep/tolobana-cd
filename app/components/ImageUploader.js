@@ -1,5 +1,6 @@
 'use client'
 import { useRef, useState } from 'react'
+import MediaPicker from './MediaPicker'
 
 const MAX_BYTES = 3.8 * 1024 * 1024
 const KEEP_AS_IS = 1.5 * 1024 * 1024
@@ -26,7 +27,8 @@ async function prepare(file) {
 
 // Envoie l'image tout de suite vers /api/upload et garde l'adresse reçue.
 // `name` : si fourni, l'adresse part aussi avec le formulaire (champ caché).
-export default function ImageUploader({ name, value = '', onChange, folder = 'articles', label = 'Choisir une image', round = false }) {
+export default function ImageUploader({ name, value = '', onChange, folder = 'articles', label = 'Choisir une image', round = false, library = true }) {
+  const [pick_, setPick] = useState(false)
   const [url, setUrl] = useState(value || '')
   const [busy, setBusy] = useState(false)
   const [err, setErr] = useState('')
@@ -57,9 +59,11 @@ export default function ImageUploader({ name, value = '', onChange, folder = 'ar
         <button type="button" className="btn gray sm" onClick={() => input.current?.click()} disabled={busy}>
           {busy ? 'Envoi en cours…' : url ? "Changer l'image" : label}
         </button>
+        {library && <button type="button" className="btn ghost sm" onClick={() => setPick(true)} disabled={busy}>Médiathèque</button>}
         {url && !busy && <button type="button" className="btn ghost sm" onClick={() => { setUrl(''); onChange?.('') }}>Retirer</button>}
       </div>
       <input ref={input} type="file" accept="image/jpeg,image/png,image/webp" hidden onChange={pick} />
       {err && <p className="err" role="alert">{err}</p>}
+      {pick_ && <MediaPicker onClose={() => setPick(false)} onPick={x => { setUrl(x.url); onChange?.(x.url); setPick(false) }} />}
     </div>)
 }
