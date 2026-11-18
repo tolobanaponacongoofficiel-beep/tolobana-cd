@@ -19,6 +19,7 @@ export default async function DashboardLayout({ children }) {
   const items = [
     { href: '/dashboard', label: 'Vue d’ensemble' },
     { href: '/dashboard/nouvel-article', label: 'Écrire un article' },
+    { href: '/dashboard/mediatheque', label: 'Médiathèque' },
     { href: '/dashboard/articles', label: atLeast(role, 'editor') ? 'Tous les articles' : 'Mes articles' },
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/auteurs', label: 'Rédacteurs' }, { href: '/dashboard/rubriques', label: 'Rubriques' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/moderation', label: 'Commentaires' }] : []),

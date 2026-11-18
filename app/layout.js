@@ -7,6 +7,7 @@ import Partners from './components/Partners'
 import Clock from './components/Clock'
 import HeaderSearch from './components/HeaderSearch'
 import MainNav from './components/MainNav'
+import ServicesMenu from './components/ServicesMenu'
 import Script from 'next/script'
 import NewsletterBox from './components/NewsletterBox'
 import PwaRegister from './components/PwaRegister'
@@ -80,6 +81,7 @@ export default async function RootLayout({ children }) {
             <Clock initialDate={date} />
           </div>
           <div className="hdr-r">
+            <ServicesMenu />
             <PrefsButtons saver={saver} />
             {staff ? <Link href="/dashboard" className="btn gold hdr-cta">Mon espace</Link>
               : user ? <form action={signOut} className="hdr-cta"><button className="btn ghost light sm">Déconnexion</button></form>
@@ -90,9 +92,8 @@ export default async function RootLayout({ children }) {
       <div className="menu-wrap"><div className="wrap">
         <MainNav
           primary={[{ href: '/', label: 'Accueil' }, { href: '/en-continu', label: 'En continu' }, { href: '/direct-foot', label: 'Direct Foot' }, { href: '/sport', label: 'Sport' }, ...list.slice(0, MAIN_COUNT).map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name }))]}
-          groups={[
-            { title: 'Rubriques', items: list.slice(MAIN_COUNT).map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name })) },
-            { title: 'Services et outils', items: [{ href: '/tv', label: 'Tolobana TV' }, { href: '/direct', label: 'Directs et conférences' }, { href: '/dossiers', label: 'Dossiers' }, { href: '/verification', label: 'Vérification' }, { href: '/stories', label: 'Stories' }, { href: '/meteo', label: 'Météo' }, { href: '/taux', label: 'Taux de change' }, { href: '/services', label: 'Services' }, { href: '/agenda', label: 'Agenda' }, { href: '/sondages', label: 'Sondages' }, { href: '/favoris', label: 'Mes favoris' }, { href: '/alertes', label: 'Alertes info' }] }]} />
+          moreLabel="Rubriques"
+          groups={[{ title: 'Rubriques', items: list.slice(MAIN_COUNT).map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name })) }]} />
       </div></div>
       {live && <div className="live-banner"><div className="wrap"><Link href={`/direct/${live.slug}`}><span className="live-dot" aria-hidden="true" />EN DIRECT · <span className="t">{live.title}</span></Link></div></div>}
       <Ticker items={breaking} />
@@ -101,7 +102,7 @@ export default async function RootLayout({ children }) {
       <NewsletterBox />
       <Partners />
       <footer><div className="wrap" style={{ display: 'grid', gap: 8 }}>
-        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/sport">Sport</Link><Link href="/meteo">Météo</Link><Link href="/services">Services</Link><Link href="/agenda">Agenda</Link><Link href="/favoris">Mes favoris</Link><Link href="/verification">Vérification</Link><Link href="/en-continu">En continu</Link><Link href="/stories">Stories</Link><Link href="/taux">Taux de change</Link><Link href="/sondages">Sondages</Link><Link href="/annoncer">Annoncer</Link><a href="/rss.xml">RSS</a><Link href={staff ? '/dashboard' : '/redaction'}>Espace rédaction</Link></nav>
+        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/annoncer">Annoncer</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><a href="/rss.xml">RSS</a><Link href={staff ? '/dashboard' : '/redaction'}>Espace rédaction</Link></nav>
         {(channel || socials.length > 0) && <div className="social-links" aria-label="Suivez-nous">
           {channel && <a href={channel} target="_blank" rel="noopener noreferrer" className="btn wa sm">Suivre sur WhatsApp</a>}
           {socials.map(x => <a key={x.label} href={x.url} target="_blank" rel="noopener noreferrer">{x.label}</a>)}</div>}
