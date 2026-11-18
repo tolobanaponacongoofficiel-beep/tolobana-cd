@@ -19,6 +19,7 @@ import './components/phase11.css'
 import './components/phase12.css'
 import './components/phase16.css'
 import './components/credit.css'
+import './components/phase25.css'
 import MobileBar from './components/MobileBar'
 import PrefsButtons from './components/PrefsButtons'
 import AdSlot from './components/AdSlot'
@@ -42,7 +43,7 @@ export async function generateMetadata() {
   }
 }
 export const viewport = { themeColor: '#031523' }
-const THEME_SCRIPT = "(function(){try{var t=localStorage.getItem('tolobana-theme');if(!t)t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)}catch(e){}})()"
+const THEME_SCRIPT = "(function(){try{var t=localStorage.getItem('tolobana-theme');if(!t)t='light';document.documentElement.setAttribute('data-theme',t)}catch(e){}})()"
 const MAIN_COUNT = 3
 
 export default async function RootLayout({ children }) {
@@ -100,12 +101,12 @@ export default async function RootLayout({ children }) {
       <NewsletterBox />
       <Partners />
       <footer><div className="wrap" style={{ display: 'grid', gap: 8 }}>
-        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/sport">Sport</Link><Link href="/meteo">Météo</Link><Link href="/services">Services</Link><Link href="/agenda">Agenda</Link><Link href="/favoris">Mes favoris</Link><Link href="/verification">Vérification</Link><Link href="/en-continu">En continu</Link><Link href="/stories">Stories</Link><Link href="/taux">Taux de change</Link><Link href="/sondages">Sondages</Link><Link href="/annoncer">Annoncer</Link><a href="/rss.xml">RSS</a></nav>
+        <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><Link href="/dossiers">Dossiers</Link><Link href="/direct">Direct</Link><Link href="/sport">Sport</Link><Link href="/meteo">Météo</Link><Link href="/services">Services</Link><Link href="/agenda">Agenda</Link><Link href="/favoris">Mes favoris</Link><Link href="/verification">Vérification</Link><Link href="/en-continu">En continu</Link><Link href="/stories">Stories</Link><Link href="/taux">Taux de change</Link><Link href="/sondages">Sondages</Link><Link href="/annoncer">Annoncer</Link><a href="/rss.xml">RSS</a><Link href={staff ? '/dashboard' : '/redaction'}>Espace rédaction</Link></nav>
         {(channel || socials.length > 0) && <div className="social-links" aria-label="Suivez-nous">
           {channel && <a href={channel} target="_blank" rel="noopener noreferrer" className="btn wa sm">Suivre sur WhatsApp</a>}
           {socials.map(x => <a key={x.label} href={x.url} target="_blank" rel="noopener noreferrer">{x.label}</a>)}</div>}
         <p style={{ margin: 0 }}>© {new Date().getFullYear()} {org}. Tous droits réservés. {set.address || 'Kinshasa, RDC.'}</p>
-        <p style={{ margin: 0 }}>Site conçu et maintenu par <a className="credit" href="https://wa.me/243818205404" target="_blank" rel="noopener noreferrer" aria-label="Contacter Ir Hilaire Tobalibi sur WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.600 15.100L2 22l5-1.300A10 10 0 1 0 12 2zm5.200 14.200c-.2.600-1.300 1.200-1.800 1.200-.5.100-1 .2-3.300-.7-2.800-1.100-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.8 2c.1.2.1.300 0 .5l-.3.400-.4.400c-.1.200-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.4.100.6-.1l.8-1c.2-.2.400-.2.600-.1l1.900.9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg>Ir Hilaire Tobalibi</a> · <Link href={staff ? '/dashboard' : '/redaction'}>Espace rédaction</Link></p>
+        <p className="credit-line"><span>Conçu et maintenu par</span><a className="credit" href="https://wa.me/243818205404" target="_blank" rel="noopener noreferrer" aria-label="Contacter Ir Hilaire Tobalibi sur WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-8.600 15.100L2 22l5-1.300A10 10 0 1 0 12 2zm5.200 14.200c-.2.600-1.300 1.200-1.800 1.200-.5.100-1 .2-3.300-.7-2.800-1.100-4.600-4-4.700-4.200-.1-.2-1.100-1.500-1.100-2.800s.7-2 1-2.300c.2-.3.500-.3.700-.3h.5c.2 0 .4 0 .6.500l.8 2c.1.2.1.300 0 .5l-.3.400-.4.400c-.1.200-.3.300-.1.600.2.300.8 1.300 1.700 2.100 1.200 1 2.100 1.300 2.400 1.500.3.100.4.100.6-.1l.8-1c.2-.2.400-.2.600-.1l1.900.9c.3.100.5.200.5.300.1.200.1.800-.1 1.400z"/></svg>Ir Hilaire Tobalibi</a></p>
       </div></footer>
       <MobileBar liveSlug={live?.slug || null} latestAt={latestAt} user={!!user} staff={staff} />
       <PwaRegister /><InstallPrompt />

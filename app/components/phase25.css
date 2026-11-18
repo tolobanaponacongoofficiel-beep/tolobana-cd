@@ -1,0 +1,55 @@
+/* Phase 25 : habillage clair et moderne (thème clair uniquement ; le thème sombre reste disponible via le bouton lune) */
+html:not([data-theme=dark]){--bg:#f4f6f9;--paper:#f4f6f9}
+html:not([data-theme=dark]) body{background:var(--bg)}
+/* En-tête blanc, liseré tricolore aux couleurs du logo */
+html:not([data-theme=dark]) header.hdr{background:#fff linear-gradient(90deg,#0a84d6 0 34%,#ffd400 34% 67%,#d0121b 67% 100%) top/100% 4px no-repeat;color:var(--ink);border-bottom:1px solid var(--line)}
+html:not([data-theme=dark]) .hdr-in{padding-top:14px}
+html:not([data-theme=dark]) .hdr .brand img{filter:drop-shadow(0 0 .6px rgba(0,0,0,.55)) drop-shadow(0 1px 1px rgba(0,0,0,.12))}
+html:not([data-theme=dark]) .hdr .clock-date{color:#52606f}
+html:not([data-theme=dark]) .hdr .clock-sep{color:#b3bdc8}
+html:not([data-theme=dark]) .hdr .clock-time{color:var(--blue-dark)!important;font-weight:800}
+html:not([data-theme=dark]) .hs-btn{color:var(--ink)}
+html:not([data-theme=dark]) .hs-btn:hover{background:rgba(10,132,214,.1)}
+html:not([data-theme=dark]) .hs-panel{background:#fff;border-bottom:1px solid var(--line);box-shadow:0 18px 30px rgba(0,0,0,.12)}
+html:not([data-theme=dark]) .hs-panel input{border:1px solid var(--line)}
+html:not([data-theme=dark]) .hdr .pref-btn{color:var(--ink);border-color:var(--line);background:#fff}
+html:not([data-theme=dark]) .hdr .pref-btn:hover{background:var(--blue-soft);color:var(--ink)}
+html:not([data-theme=dark]) .hdr .pref-btn[aria-pressed=true]{background:var(--blue);color:#fff;border-color:var(--blue)}
+/* Barre du bas (téléphone) claire */
+@media(max-width:820px){
+  html:not([data-theme=dark]) .mbar{background:#fff;border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,.06)}
+  html:not([data-theme=dark]) .mbar a{color:#5c6b7b}
+  html:not([data-theme=dark]) .mbar a:active{background:var(--blue-soft)}
+  html:not([data-theme=dark]) .mbar a[aria-current=page]{color:var(--blue-dark)}
+  html:not([data-theme=dark]) .mbar a[aria-current=page] .ic{color:var(--blue)}
+  html:not([data-theme=dark]) .mbar a[aria-current=page]::before{background:var(--blue)}
+  html:not([data-theme=dark]) .mbar .dot{border-color:#fff}
+  html:not([data-theme=dark]) .mbar a.is-live{color:var(--red)}
+}
+html:not([data-theme=dark]) .hdr .btn.ghost.light{color:var(--ink);border-color:#c7d0da;background:#fff}
+html:not([data-theme=dark]) .hdr .btn.ghost.light:hover{background:var(--blue-soft)}
+/* Cartes, titres et étiquettes : style moderne (thème clair) */
+html:not([data-theme=dark]){--bg:#eef2f7;--paper:#eef2f7;--ink:#0d1b2b;--shadow:0 1px 2px rgba(13,27,43,.06),0 8px 22px rgba(13,27,43,.07)}
+html:not([data-theme=dark]) .card,html:not([data-theme=dark]) .hero-main,html:not([data-theme=dark]) .side-item,html:not([data-theme=dark]) .most{border:0;border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+html:not([data-theme=dark]) .card,html:not([data-theme=dark]) .hero-main{transition:transform .18s ease,box-shadow .18s ease}
+html:not([data-theme=dark]) .card:hover,html:not([data-theme=dark]) .hero-main:hover{transform:translateY(-3px);box-shadow:0 2px 4px rgba(13,27,43,.08),0 16px 32px rgba(13,27,43,.12)}
+html:not([data-theme=dark]) .card h3,html:not([data-theme=dark]) .side-item h3{transition:color .15s}
+html:not([data-theme=dark]) .card:hover h3,html:not([data-theme=dark]) .side-item:hover h3,html:not([data-theme=dark]) .hero-main:hover h1{color:var(--blue-dark)}
+html:not([data-theme=dark]) .hero-text{padding:20px 22px 22px}
+html:not([data-theme=dark]) .hero-text h1{font-size:1.9rem;line-height:1.18}
+html:not([data-theme=dark]) .most{border-top:0;position:relative}
+html:not([data-theme=dark]) .most::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,#0a84d6 0 34%,#ffd400 34% 67%,#d0121b 67%)}
+html:not([data-theme=dark]) .most h2{padding-top:4px}
+/* Titres de sections : barre tricolore */
+html:not([data-theme=dark]) h2.sec,html:not([data-theme=dark]) h1.sec{border-left:0;padding-left:14px;position:relative;letter-spacing:.02em;color:var(--ink)}
+html:not([data-theme=dark]) h2.sec::before,html:not([data-theme=dark]) h1.sec::before{content:"";position:absolute;left:0;top:.08em;bottom:.08em;width:5px;border-radius:3px;background:linear-gradient(#0a84d6 0 34%,#ffd400 34% 67%,#d0121b 67%)}
+html:not([data-theme=dark]) .sec-head a{color:var(--blue-dark);font-weight:700}
+html:not([data-theme=dark]) .sec-head a:hover{text-decoration:underline}
+/* Étiquettes de rubrique en pastille */
+html:not([data-theme=dark]) .tag{display:inline-block;background:#fdeaec;color:#b3101a;padding:3px 9px;border-radius:999px;letter-spacing:.05em}
+/* Boutons */
+html:not([data-theme=dark]) .btn{border-radius:8px}
+html:not([data-theme=dark]) .btn.gold{box-shadow:0 1px 0 rgba(0,0,0,.12)}
+/* Pied de page : dégradé et liseré tricolore */
+html:not([data-theme=dark]) footer{background:linear-gradient(180deg,#0a2238,#031523);position:relative}
+html:not([data-theme=dark]) footer::before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,#0a84d6 0 34%,#ffd400 34% 67%,#d0121b 67%)}
