@@ -6,6 +6,7 @@ import { getUserAndRole, atLeast } from '@/lib/supabase/server'
 import { sanitizeBlocks, blocksToText, firstParagraph, isMediaUrl, isUuid } from '@/lib/blocks'
 import { kinshasaToISO } from '@/lib/dates'
 import { isFact } from '@/lib/fact'
+import { saveRevision } from '@/lib/wp'
 
 // Vérification des faits (éditeurs). On n'écrit ces colonnes que si nécessaire, pour ne rien casser avant l'exécution de phase10.sql.
 const factFields = (fd, hadBefore) => {
@@ -72,7 +73,7 @@ export async function updateArticle(fd) {
   const isEditor = atLeast(role, 'editor')
   const id = String(fd.get('id') || '')
   if (!isUuid(id)) redirect('/dashboard/articles')
-  const { data: old } = await sb.from('articles').select('id,slug,author_id,status,image_url,published_at,last_update_at').eq('id', id).single()
+  const { data: old } = await sb.from('articles').select('id,slug,author_id,status,image_url,published_at,last_update_at,title,subtitle,summary,blocks').eq('id', id).single()
   if (!old) redirect('/dashboard/articles?err=introuvable')
   // Un journaliste ne modifie que ses propres articles non publiés ; un éditeur modifie tout.
   if (!isEditor && (old.author_id !== user.id || old.status === 'published')) redirect('/dashboard/articles?err=interdit')
@@ -107,6 +108,7 @@ export async function updateArticle(fd) {
   // Mention « Mis à jour le … » affichée sur l'article publié (correction ou ajout important).
   if (isEditor && old.status === 'published' && !scheduledNow && fd.get('mark_updated') === 'on') upd.last_update_at = nowISO
 
+  await saveRevision(sb, old, user.id)
   const { error } = await sb.from('articles').update(upd).eq('id', id)
   if (error) redirect(`/dashboard/articles/${id}?err=enregistrement`)
   await sb.from('audit_log').insert({ user_id: user.id, action: intent === 'publish' ? 'publish' : 'article_edit', target: id })

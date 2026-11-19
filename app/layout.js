@@ -7,6 +7,7 @@ import Partners from './components/Partners'
 import Clock from './components/Clock'
 import HeaderSearch from './components/HeaderSearch'
 import MainNav from './components/MainNav'
+import { parseMenuLinks } from '@/lib/wp'
 import ServicesMenu from './components/ServicesMenu'
 import Script from 'next/script'
 import JoinBlock from './components/JoinBlock'
@@ -52,7 +53,6 @@ export const viewport = { themeColor: '#031523' }
 const THEME_SCRIPT = "(function(){try{var t=localStorage.getItem('tolobana-theme');if(!t)t='light';document.documentElement.setAttribute('data-theme',t)}catch(e){}})()"
 const serif = Merriweather({ subsets: ['latin'], weight: ['300', '400', '700', '900'], variable: '--f-serif', display: 'swap' })
 const sans = Source_Sans_3({ subsets: ['latin'], weight: ['400', '600', '700', '800'], variable: '--f-sans', display: 'swap' })
-const MAIN_COUNT = 3
 
 export default async function RootLayout({ children }) {
   const { sb, user, role } = await getUserAndRole()
@@ -73,6 +73,8 @@ export default async function RootLayout({ children }) {
     .lte('published_at', new Date().toISOString()).order('published_at', { ascending: false }).limit(8)
   const date = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Africa/Kinshasa' })
   const list = (cats || []).filter(c => !['videos', 'tolobana-tv'].includes(c.slug))
+  const MAIN_COUNT = Math.min(8, Math.max(1, Number(set.menu_count) || 3))
+  const extra = parseMenuLinks(set.menu_links)
   const link = c => <Link key={c.slug} href={`/?rubrique=${c.slug}`}>{c.name}</Link>
   return (
     <html lang="fr" className={`${serif.variable} ${sans.variable}`} suppressHydrationWarning><head><script dangerouslySetInnerHTML={{ __html: THEME_SCRIPT }} /></head><body>
@@ -99,7 +101,7 @@ export default async function RootLayout({ children }) {
       </header>
       <div className="menu-wrap"><div className="wrap">
         <MainNav
-          primary={[{ href: '/', label: 'Accueil' }, { href: '/en-continu', label: 'En continu' }, { href: '/direct-foot', label: 'Direct Foot' }, { href: '/sport', label: 'Sport' }, ...list.slice(0, MAIN_COUNT).map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name }))]}
+          primary={[{ href: '/', label: 'Accueil' }, { href: '/en-continu', label: 'En continu' }, { href: '/direct-foot', label: 'Direct Foot' }, { href: '/sport', label: 'Sport' }, ...list.slice(0, MAIN_COUNT).map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name })), ...extra]}
           moreLabel="Rubriques"
           groups={[{ title: 'Rubriques', items: list.slice(MAIN_COUNT).map(c => ({ href: `/?rubrique=${c.slug}`, label: c.name })) }]} />
       </div></div>

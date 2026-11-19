@@ -1,0 +1,46 @@
+/* Phase 32 : gestion des articles à la WordPress */
+.wp-tabs{display:flex;flex-wrap:wrap;gap:4px 14px;margin:6px 0 10px;font:600 .9rem var(--sans)}
+.wp-tabs a{color:var(--ink);padding:6px 0;border-bottom:2px solid transparent}
+.wp-tabs a span{color:#667;font-weight:400}
+.wp-tabs a.on{border-color:var(--blue);color:var(--blue)}
+.wp-filter{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+.wp-filter input,.wp-filter select{padding:8px 10px;border:1px solid #c7d0da;border-radius:8px;font:inherit;min-width:0}
+.wp-filter input[type=search]{flex:1 1 200px}
+.bulk{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:0 0 12px;border-bottom:1px solid var(--line);font:600 .85rem var(--sans)}
+.bulk select,.bulk input[type=text],.bulk input:not([type]){padding:7px 9px;border:1px solid #c7d0da;border-radius:8px;font:inherit}
+.bulk-all{display:flex;align-items:center;gap:6px}
+.wp-row{flex-wrap:wrap;align-items:flex-start}
+.wp-row>input[type=checkbox]{margin-top:5px;flex:none;width:18px;height:18px}
+.wp-main{flex:1 1 260px;display:grid;min-width:0}
+.wp-row .acts{align-items:center}
+.wp-qe{flex-basis:100%;margin-left:32px}
+.wp-qe summary{cursor:pointer;font:600 .82rem var(--sans);color:var(--blue)}
+.wp-qe form{display:grid;gap:8px;margin-top:8px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));align-items:end}
+.wp-qe label{display:grid;gap:3px;font:600 .78rem var(--sans)}
+.wp-qe input,.wp-qe select{padding:7px 9px;border:1px solid #c7d0da;border-radius:8px;font:inherit;font-weight:400;min-width:0}
+.wp-pages{display:flex;gap:12px;align-items:center;justify-content:center;padding-top:14px}
+.chip.scheduled{background:#fff2c9;color:#7a5a00}.chip.trash{background:#fde8e9;color:#9b0c13}.chip.submitted{background:#e1ecff;color:#1b4aa0}
+.chip.published{background:#e4f6ea;color:#15602f}.chip.rejected{background:#fde8e9;color:#9b0c13}
+.rev-grid{display:grid;grid-template-columns:minmax(220px,300px) 1fr;gap:16px;align-items:start}
+.rev-list{list-style:none;margin:0;padding:0}
+.rev-list li a{display:grid;padding:10px 8px;border-bottom:1px solid var(--line);color:inherit;border-radius:6px}
+.rev-list li.on a,.rev-list li a:hover{background:#eef4fb}
+.diff{border:1px solid var(--line);border-radius:8px;padding:10px;max-height:60vh;overflow:auto;font:400 .9rem/1.5 var(--sans);margin:10px 0}
+.diff p{margin:0;padding:1px 6px;white-space:pre-wrap;word-break:break-word}
+.diff .add{background:#e4f6ea;color:#15602f}.diff .del{background:#fde8e9;color:#9b0c13;text-decoration:line-through}
+.notes .note{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.notes .note p{margin:4px 0 0;white-space:pre-wrap}
+.note-form{display:grid;gap:8px;margin-top:12px;justify-items:start}
+.note-form textarea{width:100%;padding:9px 10px;border:1px solid #c7d0da;border-radius:8px;font:inherit}
+.ap{display:grid;gap:12px;max-width:640px}
+.ap label{display:grid;gap:4px;font:600 .88rem var(--sans)}
+.ap select,.ap textarea{padding:8px 10px;border:1px solid #c7d0da;border-radius:8px;font:inherit;font-weight:400}
+.ap-checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.ap-ck{display:flex!important;align-items:center;gap:8px;font-weight:400!important}
+@media(max-width:760px){.rev-grid{grid-template-columns:1fr}.wp-qe{margin-left:0}}
+html[data-theme=dark] .diff .add{background:#12351f;color:#9be7b5}html[data-theme=dark] .diff .del{background:#3a1519;color:#ffb3b8}
+html[data-theme=dark] .rev-list li.on a,html[data-theme=dark] .rev-list li a:hover{background:#12304d}
+.wp-filter input,.wp-filter select,.bulk select,.bulk input:not([type=checkbox]),.wp-qe input,.wp-qe select{width:auto}
+.wp-filter input[type=search]{width:auto;flex:1 1 200px}
+.wp-qe input,.wp-qe select{width:100%}
+.wp-filter select{max-width:100%}

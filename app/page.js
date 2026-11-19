@@ -62,6 +62,7 @@ export default async function Home({ searchParams }) {
     pub().limit(8),
     sb.from('articles').select('title,slug,views').eq('status', 'published').lte('published_at', now).order('views', { ascending: false }).limit(5),
   ])
+  const hide = new Set(String((await getSettings(sb)).home_hide || '').split(','))
   let [hero, ...rest] = latest || []
   // « À la une » choisie à la main (réglage de la rédaction) : remplace le dernier article.
   try {
@@ -101,7 +102,7 @@ export default async function Home({ searchParams }) {
             <div className="sec-head"><h2 className="sec">{s.title}</h2><Link href={`/?rubrique=${s.slugs[0]}`}>Voir toute la rubrique</Link></div>
             <div className="grid4">{s.items.map(a => <Card key={a.slug} a={a} />)}</div></section>))}
         </div>
-        <aside><AdSlot placement="sidebar" /><WeatherWidget /><RateWidget /><SportMini /><AgendaMini /><TodayPoll />{most?.length > 0 && <div className="most"><h2>Les plus lus</h2>
+        <aside><AdSlot placement="sidebar" />{!hide.has('weather') && <WeatherWidget />}{!hide.has('rates') && <RateWidget />}{!hide.has('sport') && <SportMini />}{!hide.has('agenda') && <AgendaMini />}{!hide.has('poll') && <TodayPoll />}{!hide.has('most') && most?.length > 0 && <div className="most"><h2>Les plus lus</h2>
           <ol>{most.map(a => <li key={a.slug}><Link href={`/article/${a.slug}`}>{a.title}<br /><span className="meta">{a.views} lecture{a.views > 1 ? 's' : ''}</span></Link></li>)}</ol></div>}</aside>
       </div>
     </main>)

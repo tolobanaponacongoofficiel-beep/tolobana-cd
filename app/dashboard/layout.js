@@ -31,7 +31,7 @@ export default async function DashboardLayout({ children }) {
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/journal', label: 'Journal d’activité' }] : []),
     ...(atLeast(role, 'editor') ? [{ href: '/dashboard/a-la-une', label: 'À la une' }, { href: '/dashboard/direct', label: 'Direct' }, { href: '/dashboard/direct-foot', label: 'Direct Foot' }, { href: '/dashboard/diagnostic-sport', label: 'Diagnostic sport' }, { href: '/dashboard/alertes', label: 'Alertes push' }, { href: '/dashboard/stories', label: 'Stories' }, { href: '/dashboard/services', label: 'Services' }, { href: '/dashboard/sport', label: 'Sport' }, { href: '/dashboard/agenda', label: 'Agenda' }] : []),
     ...(atLeast(role, 'admin') ? [{ href: '/dashboard/publicites', label: 'Publicités' }, { href: '/dashboard/revenus', label: 'Revenus' }] : []),
-    ...(atLeast(role, 'admin') ? [{ href: '/dashboard/messages', label: 'Messages reçus' }, { href: '/dashboard/reglages', label: 'Pages et réglages' }] : []),
+    ...(atLeast(role, 'admin') ? [{ href: '/dashboard/messages', label: 'Messages reçus' }, { href: '/dashboard/reglages', label: 'Pages et réglages' }, { href: '/dashboard/apparence', label: 'Apparence' }] : []),
     { href: '/dashboard/profil', label: 'Mon profil' },
   ]
   return (
