@@ -1,0 +1,11 @@
+/* Phase 33 : météo avec photos des villes */
+.wx-photo{background-size:cover!important;background-position:center!important;color:#fff!important;border-top:0!important;min-height:112px;align-content:end;border-radius:14px!important;overflow:hidden;text-shadow:0 1px 6px rgba(0,0,0,.45)}
+.wx-photo .wx-ic{color:#fff}.wx-photo .wx-sub{color:#e6eef7}.wx-photo b{font-size:1.15rem}
+.wx-hero{background-size:cover!important;background-position:center!important;min-height:230px;align-items:flex-end;border-radius:16px;text-shadow:0 1px 8px rgba(0,0,0,.5)}
+.wx-hero .wx-temp{font-size:3.2rem}
+.wx-pcard{background-size:cover!important;background-position:center!important;color:#fff!important;min-height:132px;align-content:end;border-radius:14px;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+.wx-pcard .wx-ic{color:#fff}.wx-pcard .wx-sub{color:#e6eef7}.wx-pcard:hover{outline:3px solid var(--blue)}
+.wx-grid{grid-template-columns:repeat(auto-fill,minmax(170px,1fr))!important}
+.ap-cities{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.ap-city{display:grid;gap:6px;align-content:start}
+html[data-theme=dark] .wx-photo,html[data-theme=dark] .wx-pcard{background-color:#0d2238}
