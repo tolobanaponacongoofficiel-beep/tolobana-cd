@@ -27,7 +27,7 @@ const GROUPS = [
   [{ href: '/meteo', label: 'Météo', i: 'sun' }, { href: '/taux', label: 'Taux de change', i: 'coins' }, { href: '/agenda', label: 'Agenda', i: 'cal' }, { href: '/sondages', label: 'Sondages', i: 'poll' }, { href: '/services', label: 'Services pratiques', i: 'grid' }],
   [{ href: '/favoris', label: 'Mes favoris', i: 'star' }, { href: '/alertes', label: 'Alertes info', i: 'bell' }, { href: '/annoncer', label: 'Annoncer chez nous', i: 'mega' }, { href: '/contact', label: 'Contact', i: 'mail' }],
 ]
-export default function ServicesMenu({ rubriques = [] }) {
+export default function ServicesMenu() {
   const p = usePathname() || '/', [open, setOpen] = useState(false), box = useRef(null)
   useEffect(() => { setOpen(false) }, [p])
   useEffect(() => {
@@ -38,8 +38,7 @@ export default function ServicesMenu({ rubriques = [] }) {
     return () => { document.removeEventListener('keydown', k); document.removeEventListener('mousedown', c); document.removeEventListener('touchstart', c) }
   }, [open])
   return (<div className="svc" ref={box}>
-    <button type="button" className={`svc-btn${open ? ' open' : ''}`} aria-expanded={open} aria-haspopup="true" aria-label="Rubriques et services" aria-controls="svc-panel" onClick={() => setOpen(o => !o)}><Ic k="grid" /><span className="sr-only">Rubriques et services</span></button>
+    <button type="button" className={`svc-btn${open ? ' open' : ''}`} aria-expanded={open} aria-haspopup="true" aria-controls="svc-panel" onClick={() => setOpen(o => !o)}><Ic k="grid" /><span className="svc-lbl">Services</span></button>
     <div id="svc-panel" className="svc-panel" hidden={!open}>
-      {rubriques.length > 0 && <div className="svc-grp svc-rub">{rubriques.map(r => <div key={r.slug} className="svc-r"><Link href={`/?rubrique=${r.slug}`} className="svc-rh">{r.name}</Link>{r.children.map(c => <Link key={c.slug} href={`/?rubrique=${c.slug}`} className="svc-rc">{c.name}</Link>)}</div>)}</div>}
       {GROUPS.map((g, n) => <div key={n} className="svc-grp">{g.map(x => <Link key={x.href} href={x.href} className={p === x.href || p.startsWith(x.href + '/') ? 'on' : undefined}><Ic k={x.i} />{x.label}</Link>)}</div>)}</div></div>)
 }
