@@ -24,6 +24,7 @@ import './components/phase25.css'
 import './components/phase27.css'
 import './components/phase28.css'
 import './components/phase29.css'
+import RatesBar from './components/RatesBar'
 import { Merriweather, Source_Sans_3 } from 'next/font/google'
 import MobileBar from './components/MobileBar'
 import PrefsButtons from './components/PrefsButtons'
@@ -79,6 +80,7 @@ export default async function RootLayout({ children }) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ORG) }} />
       {GA && <><Script src={`https://www.googletagmanager.com/gtag/js?id=${GA}`} strategy="afterInteractive" />
         <Script id="ga" strategy="afterInteractive">{`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${GA}');`}</Script></>}
+      <RatesBar settings={set} />
       <header className="top hdr">
         <div className="wrap hdr-in">
           <div className="hdr-l"><HeaderSearch /></div>

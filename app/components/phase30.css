@@ -1,0 +1,22 @@
+/* Phase 30 : bandeau des taux très fin, défilement continu */
+.rb{display:flex;align-items:center;background:#f6f7f9;border-bottom:1px solid #e3e7ec;height:30px;font:400 .78rem var(--sans);color:var(--ink)}
+.rb-scroll{flex:1;min-width:0;overflow:hidden;white-space:nowrap;mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 14px),transparent)}
+.rb-track{display:inline-flex;animation:rbmove 90s linear infinite;will-change:transform}
+.rb-track:hover{animation-play-state:paused}
+.rb-row{display:inline-flex;list-style:none;margin:0;padding:0}
+.rb-row li{padding:0 16px;border-right:1px solid #dde2e8;line-height:30px}
+.rb-row b{font-weight:700;margin-right:5px}
+.rb-all{flex:none;display:inline-flex;align-items:center;gap:4px;padding:0 14px;height:100%;border-left:1px solid #dde2e8;background:#f6f7f9;font:600 .76rem var(--sans);color:var(--ink);white-space:nowrap}
+.rb-all:hover{text-decoration:underline}
+@keyframes rbmove{to{transform:translateX(-50%)}}
+@media(prefers-reduced-motion:reduce){.rb-scroll{overflow-x:auto;mask-image:none}.rb-track{animation:none}.rb-row[aria-hidden]{display:none}}
+html[data-theme=dark] .rb{background:#07111b;border-color:#1b3350;color:#e8eef5}
+html[data-theme=dark] .rb-row li,html[data-theme=dark] .rb-all{border-color:#1b3350}
+html[data-theme=dark] .rb-all{background:#07111b;color:#e8eef5}
+/* Page Taux : tableau des devises */
+.rt{width:100%;border-collapse:collapse;font:400 .95rem var(--sans);margin:8px 0 14px}
+.rt th,.rt td{padding:10px 12px;border-bottom:1px solid #e3e7ec;text-align:left}
+.rt th{font-weight:700;font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;color:#667}
+.rt td:last-child,.rt th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.rt td b{margin-right:6px}
+html[data-theme=dark] .rt th,html[data-theme=dark] .rt td{border-color:#1b3350}
