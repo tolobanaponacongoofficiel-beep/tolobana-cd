@@ -9,7 +9,7 @@ import HeaderSearch from './components/HeaderSearch'
 import MainNav from './components/MainNav'
 import ServicesMenu from './components/ServicesMenu'
 import Script from 'next/script'
-import NewsletterBox from './components/NewsletterBox'
+import JoinBlock from './components/JoinBlock'
 import PwaRegister from './components/PwaRegister'
 import InstallPrompt from './components/InstallPrompt'
 import { SITE_URL } from '@/lib/site'
@@ -23,6 +23,7 @@ import './components/credit.css'
 import './components/phase25.css'
 import './components/phase27.css'
 import './components/phase28.css'
+import './components/phase29.css'
 import { Merriweather, Source_Sans_3 } from 'next/font/google'
 import MobileBar from './components/MobileBar'
 import PrefsButtons from './components/PrefsButtons'
@@ -104,7 +105,7 @@ export default async function RootLayout({ children }) {
       <Ticker items={breaking} />
       <div className="wrap"><AdSlot placement="banner" /></div>
       <div id="contenu" tabIndex={-1} style={{ outline: 'none' }}>{children}</div>
-      <NewsletterBox />
+      <JoinBlock channel={channel} phone={set.phone} org={org} />
       <Partners />
       <footer><div className="wrap" style={{ display: 'grid', gap: 8 }}>
         <nav className="foot-links" aria-label="Informations"><Link href="/a-propos">À propos</Link><Link href="/contact">Contact</Link><Link href="/annoncer">Annoncer</Link><Link href="/mentions-legales">Mentions légales</Link><Link href="/charte-editoriale">Charte éditoriale</Link><Link href="/confidentialite">Confidentialité</Link><a href="/rss.xml">RSS</a><Link href={staff ? '/dashboard' : '/redaction'}>Espace rédaction</Link></nav>

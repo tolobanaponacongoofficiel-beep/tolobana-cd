@@ -1,0 +1,13 @@
+/* Phase 29 : bloc WhatsApp à la place de la newsletter */
+.join{padding:26px 0 8px}
+.join-box{display:grid;grid-template-columns:auto 1fr auto;gap:8px 20px;align-items:center;background:#0d1b2b;color:#fff;border-radius:18px;padding:24px 28px}
+.join-ic{width:56px;height:56px;border-radius:50%;background:#25d366;color:#fff;display:grid;place-items:center}.join-ic svg{width:30px;height:30px}
+.join-tx h2{margin:0 0 4px;font:800 1.35rem var(--serif)}.join-tx p{margin:0;font:400 1rem/1.45 var(--sans);color:#c9d6e4}
+.join-act{display:flex;gap:10px;flex-wrap:wrap}
+.join-b{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:999px;border:1.5px solid rgba(255,255,255,.55);color:#fff;font:700 .98rem var(--sans);white-space:nowrap}
+.join-b svg{width:20px;height:20px}
+.join-b:hover{background:rgba(255,255,255,.12)}
+.join-b.main{background:#25d366;border-color:#25d366;color:#06240f}.join-b.main:hover{background:#3be07c}
+.join-sub{grid-column:1/-1;margin:6px 0 0;font:600 .9rem var(--sans)}
+.join-sub a{color:#ffd400;text-decoration:underline;text-underline-offset:3px}
+@media(max-width:720px){.join-box{grid-template-columns:1fr;padding:22px 18px;text-align:left}.join-act{flex-direction:column}.join-b{justify-content:center}}
