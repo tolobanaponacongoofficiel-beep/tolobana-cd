@@ -97,9 +97,8 @@ export default async function ArticlePage({ params }) {
       <ArticleBody blocks={blocks} saver={saver} />
       <AdSlot placement="article" />
       {a.tags?.length > 0 && <div className="chips" aria-label="Mots-clés">{a.tags.map(t => <Link key={t} href={`/tag/${encodeURIComponent(t)}`}>#{t}</Link>)}</div>}
-      {related?.length > 0 && <div className="related"><div className="sec-head"><h2 className="sec">À lire aussi</h2></div>
-        <div className="grid4">{related.map(r => (<Link key={r.slug} href={`/article/${r.slug}`} className="card">
-          <div className="media">{r.image_url && !saver ? <img className="thumb" src={r.image_url} alt={r.title} /> : <div className="ph">Tolobana Info</div>}</div><div className="in"><h3>{r.title}</h3></div></Link>))}</div></div>}
+      {related?.length > 0 && <aside className="lire-aussi" aria-label="À lire aussi"><p className="la-h"><span aria-hidden="true" />À lire aussi</p>
+        <ul>{related.map(r => <li key={r.slug}><Link href={`/article/${r.slug}`}><span>{r.title}</span><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6" /></svg></Link></li>)}</ul></aside>}
       <Comments articleId={a.id} slug={a.slug} />
     </article>)
 }
