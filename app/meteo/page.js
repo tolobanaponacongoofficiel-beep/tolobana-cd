@@ -5,11 +5,12 @@ import '../components/phase12.css'
 import '../components/phase33.css'
 import { supabaseServer } from '@/lib/supabase/server'
 import { getSettings } from '@/lib/settings'
-import { cityPhotos, cityBg } from '@/lib/cityart'
+import { cityPhotos, cityBg, cityCredits } from '@/lib/cityart'
 export const metadata = { title: 'Météo en RDC', description: 'Prévisions météo à Kinshasa, Lubumbashi, Goma, Kisangani et dans les grandes villes de la RDC.', alternates: { canonical: '/meteo' } }
 export default async function Meteo({ searchParams }) {
   const city = cityBySlug(String(searchParams?.ville || ''))
-  const photos = cityPhotos(await getSettings(supabaseServer()))
+  const set = await getSettings(supabaseServer()), photos = cityPhotos(set)
+  const credits = cityCredits(set, Object.fromEntries(CITIES.map(c => [c.slug, c.name])))
   const [w, others] = await Promise.all([getWeather(city), Promise.all(CITIES.filter(c => c.slug !== city.slug).map(async c => ({ c, w: await getWeather(c) })))])
   return (<main className="wrap">
     <div className="sec-head"><h1 className="sec">Météo</h1></div>
@@ -27,6 +28,7 @@ export default async function Meteo({ searchParams }) {
     <h2 className="wx-h">Autres villes</h2>
     <div className="wx-grid">{others.filter(o => o.w).map(({ c, w: x }) => (<a key={c.slug} className="wx-card wx-pcard" style={cityBg(c.slug, x.icon, photos)} href={`/meteo?ville=${c.slug}`}>
       <b>{c.name}</b><span className="wx-ic"><WeatherIcon type={x.icon} size={30} /></span><span>{x.temp != null ? `${x.temp}°` : '—'}</span><span className="wx-sub">{x.label}</span></a>))}</div>
+    {credits.length > 0 && <p className="meta">Photos des villes : <a href="https://commons.wikimedia.org" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a> (licences libres) — {credits.map((c, i) => <span key={c.name}>{i > 0 && ', '}<a href={c.href} target="_blank" rel="noopener noreferrer">{c.name}</a></span>)}. Auteurs et licences sur chaque page.</p>}
     <p className="meta" style={{ marginTop: 18 }}>Prévisions : <a href="https://www.met.no/en" target="_blank" rel="noopener noreferrer">MET Norway</a> (licence CC BY 4.0). Indicatives : les orages locaux peuvent différer.</p>
   </main>)
 }

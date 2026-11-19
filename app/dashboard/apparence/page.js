@@ -4,7 +4,7 @@ import { getSettings } from '@/lib/settings'
 import { HOME_BLOCKS } from '@/lib/wp'
 import { saveAppearance } from './actions'
 import { CITIES } from '@/lib/weather'
-import { cityPhotos } from '@/lib/cityart'
+import { adminCityPhotos } from '@/lib/cityart'
 import ImageUploader from '../../components/ImageUploader'
 import '../../components/phase32.css'
 export const metadata = { title: 'Apparence' }
@@ -12,7 +12,7 @@ export default async function Apparence({ searchParams }) {
   const { sb, user, role } = await getUserAndRole()
   if (!user || !atLeast(role, 'admin')) redirect('/dashboard')
   const s = await getSettings(sb), hidden = new Set(String(s.home_hide || '').split(',')), count = Math.min(8, Math.max(1, Number(s.menu_count) || 3))
-  const photos = cityPhotos(s)
+  const photos = adminCityPhotos(s)
   return (<>
     <div className="dash-head"><h1>Apparence du site</h1></div>
     {searchParams?.ok && <p className="notice ok" role="status">Apparence enregistrée.</p>}
@@ -27,7 +27,7 @@ export default async function Apparence({ searchParams }) {
       <p className="meta">Décochez un bloc pour le masquer.</p>
       <div className="ap-checks">{HOME_BLOCKS.map(([k, l]) => <label key={k} className="ap-ck"><input type="checkbox" name="show" value={k} defaultChecked={!hidden.has(k)} /> {l}</label>)}</div>
       <h2 className="wx-h">Photos des villes (météo)</h2>
-      <p className="meta">Une belle photo par ville s’affiche en fond de la météo. Sans photo, une illustration automatique est utilisée. Choisissez dans la Médiathèque ou envoyez une image (paysage, de préférence).</p>
+      <p className="meta">Une photo libre de droits (Wikimedia Commons) s’affiche par défaut pour la plupart des villes ; une illustration automatique sert aux autres. Pour mettre la vôtre, choisissez-la dans la Médiathèque ou envoyez une image (paysage de préférence) : elle remplace celle par défaut.</p>
       <div className="ap-cities">{CITIES.map(c => <div key={c.slug} className="ap-city"><b>{c.name}</b><ImageUploader name={`city_${c.slug}`} value={photos[c.slug] || ''} folder="library" label="Choisir la photo" /></div>)}</div>
       <button className="btn">Enregistrer</button>
     </form>
